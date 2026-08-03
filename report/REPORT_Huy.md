@@ -3,7 +3,7 @@
 **Họ tên:** Nguyễn Quang Hà
 **MSSV:** 2A202601424
 **Lớp:** K4 — biến thể Chính sách thương mại điện tử
-**Nhóm:** [điền tên nhóm]
+**Nhóm:** [3HQ]
 **Ngày:** 03/08/2026
 **Strategy cá nhân:** `HeadingChunker` (chunk theo Điều/heading, có gắn lại breadcrumb tiêu đề) — file `strategies.py`
 

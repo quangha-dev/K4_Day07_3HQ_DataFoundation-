@@ -89,30 +89,32 @@ Với 9 tài liệu, corpus phủ đủ **cả 5 chủ đề K4 gợi ý**: than
 
 Ba thành viên dùng **chung corpus, chung 5 query, chung embedder**; chỉ khác đúng dòng chọn chunker trong `bench.py` (registry `STRATEGIES`).
 
-**Thành viên 1 — Nguyễn Quang Hà**
+**Thành viên 1 — Nguyễn Quang Hà (2A202601424)**
 
-- **Loại chiến lược:** `HeadingChunker` — **custom, chunk theo Điều/heading** (đáp ứng yêu cầu K4 "ít nhất một thành viên chia theo điều/khoản/heading").
-- **Mô tả & lý do:** Văn bản pháp luật biên soạn theo mục; mỗi Điều đã là một đơn vị ngữ nghĩa trọn vẹn. Chunker tách trước mỗi dòng tiêu đề (Markdown `#` hoặc `Điều N.`), gộp các section quá ngắn (`min_chunk_size=120`) để tránh chunk vụn chỉ có mỗi dòng tiêu đề, và **hạ xuống `RecursiveChunker` khi section vượt `max_chunk_size=900`**. Chi tiết quan trọng nhất: khi cắt nhỏ một section dài, **gắn lại tiêu đề Điều vào từng mảnh con** (`keep_breadcrumb=True`) — không có bước này thì mảnh thứ hai trở đi mất ngữ cảnh.
-- **Code:** `strategies.py::HeadingChunker`
+- **Loại chiến lược:** `ParagraphChunker` — **custom, chia theo ĐOẠN**, ranh giới là **dòng trống** (hai lần Enter).
+- **Mô tả & lý do:** Trong Markdown và trong văn bản quy phạm pháp luật, dòng trống chính là dấu hiệu "hết một ý, sang ý khác" **do người soạn thảo đánh dấu sẵn**. Chunker không tự nghĩ ra ranh giới mà dùng lại ranh giới có sẵn. Khác biệt so với ba chunker có sẵn: `FixedSizeChunker` cắt theo số ký tự (ranh giới nhân tạo); `SentenceChunker` cắt theo dấu chấm (hỏng với gạch đầu dòng kết thúc bằng `;`); `RecursiveChunker` tuy ưu tiên `\n\n` nhưng vẫn **gom** nhiều đoạn cho đủ `chunk_size` nên một chunk chứa nhiều ý.
+- **Ba bước, mỗi bước chặn một lỗi cụ thể:** (1) cắt tại dòng trống; (2) **gộp đoạn ngắn** — chặn chunk vụn bị TF-IDF thổi điểm; (3) **gắn tiêu đề Điều** vào đầu chunk — đoạn "c) Tổng giá trị của hợp đồng…" tự nó không cho biết thuộc Điều nào. Thứ tự bước 2 trước bước 3 là bắt buộc: làm ngược lại thì hai đoạn cùng Điều bị nối và tiêu đề in hai lần trong một chunk.
+- **Code:** `src/2A202601424-NguyenQuangHa/chunking.py::ParagraphChunker`
 
 ```python
-class HeadingChunker:
+class ParagraphChunker:
+    _PARAGRAPH_BREAK = re.compile(r"\n[ \t]*\n+")   # 2 Enter = ranh giới đoạn
+
     def chunk(self, text: str) -> list[str]:
-        sections = self._merge_tiny_sections(self._split_sections(text))
+        blocks = self._split_paragraphs(text)    # [(tiêu_đề, nội_dung)]
+        merged = self._merge_short(blocks)       # gộp đoạn ngắn, KHÔNG qua ranh giới tiêu đề
         chunks = []
-        for title, body in sections:
-            block = f"{title}\n{body}".strip() if title else body.strip()
+        for heading, body in merged:             # gắn tiêu đề MỘT lần, SAU khi gộp
+            prefix = heading if (self.keep_heading and heading) else ""
+            block = f"{prefix}\n{body}".strip() if prefix else body.strip()
             if len(block) <= self.max_chunk_size:
-                chunks.append(block); continue
-            budget = self.max_chunk_size - (len(title) + 1 if title else 0)
-            for i, piece in enumerate(RecursiveChunker(chunk_size=max(120, budget)).chunk(body)):
-                # GẮN LẠI tiêu đề vào TỪNG mảnh con
-                chunks.append(f"{title}\n{piece}".strip()
-                              if title and (self.keep_breadcrumb or i == 0) else piece.strip())
-        return [c for c in chunks if c]
+                chunks.append(block)
+            else:
+                chunks.extend(self._split_long(prefix, body))
+        return [c.strip() for c in chunks if c.strip()]
 ```
 
-- **Bonus:** `LLMSemanticChunker` — nhờ LLM đề xuất ranh giới ngữ nghĩa (đánh số dòng → hỏi "dòng nào bắt đầu một ý trọn vẹn?"), có **fallback an toàn** về `HeadingChunker` khi không có API key hoặc output không parse được. Trong buổi lab này không có `OPENAI_API_KEY` nên nó chạy ở chế độ fallback, vì vậy kết quả trùng `heading`.
+- **Chọn tham số bằng thực nghiệm, không đoán.** Quét `min_chunk_size` trên đúng 5 query của nhóm: 100→7, 150→7, 250→7, 350→8, **450→9**, 600→8. Chọn 450 vì đó là ngưỡng đủ lớn để một câu dẫn và toàn bộ danh sách a/b/c của nó nằm chung một chunk, nhưng chưa lớn tới mức gộp hai ý khác nhau.
 
 **Thành viên 2 — [tên]**
 
@@ -130,18 +132,21 @@ Embedder dùng chung: `LexicalEmbedder` (TF-IDF, `lexical_embedding.py`). Output
 
 | Thành viên | Strategy | Chunks | Q1 | Q2 | Q3 | Q4 | Q5 | **Điểm chunk-level /10** | Điểm mạnh | Điểm yếu |
 |---|---|---|---|---|---|---|---|---|---|---|
-| Hà | `heading` (max 900, breadcrumb) | 50 | 2 | 2 | 1 | 2 | 2 | **9** | Giữ nguyên Điều → điều kiện + ngoại lệ cùng chunk; ít chunk nhất nên context sạch | Section dài vẫn phải cắt; không có overlap nên mỗi thông tin chỉ một cơ hội |
-| Hà (ablation) | `heading_nobreadcrumb` (max 400) | 108 | 2 | 1 | 0 | 2 | 2 | 7 | — | Mảnh con mất tiêu đề Điều → chunk bắt đầu bằng câu cụt |
-| Hà (bonus) | `llm_semantic` (fallback) | 50 | 2 | 2 | 1 | 2 | 2 | **9** | Có cơ chế nhờ LLM; fallback không bao giờ crash | Chưa gọi LLM thật trong lab này |
-| TV2 | `recursive` (400) | 92 | 2 | 1 | 0 | 2 | 2 | 7 | Tôn trọng ranh giới đoạn, dễ tune | Tách khoản khỏi tiêu đề Điều |
-| TV3 | `fixed` (500/50) | 67 | 2 | 0 | 0 | 2 | 2 | **6** | Đơn giản, có overlap | Ranh giới rơi tùy tiện giữa hai Điều; Q2 chiếm cả 3 slot bằng doc gold mà không slot nào chứa đáp án |
-| — | `sentence` (3 câu) | 69 | 2 | 1 | 0 | 2 | 2 | 7 | — | Gạch đầu dòng không có dấu chấm → gộp thành khối lớn |
+| **Hà** | **`paragraph`** (max 700, min 450, có tiêu đề) | 65 | 2 | 2 | 1 | 2 | 2 | **9** | Tôn trọng ranh giới tác giả tạo sẵn; điều kiện + ngoại lệ cùng chunk | Không có overlap; câu dẫn và danh sách nằm hai chunk khác nhau (Q3) |
+| Hà (ablation 1) | `paragraph_noheading` | 63 | 2 | 2 | 0 | 2 | 2 | 8 | — | Chunk mất ngữ cảnh "đây là Điều nào" |
+| Hà (ablation 2) | `paragraph_nomerge` (min 0) | 162 | 2 | 1 | 0 | 2 | 2 | 7 | — | Chunk vụn được TF-IDF thổi điểm: top-1 Q3 đạt 0.5223 mà **0 điểm** |
+| TV2 | *(điền sau)* | | | | | | | | | |
+| TV3 | *(điền sau)* | | | | | | | | | |
+| TV4 | *(điền sau)* | | | | | | | | | |
+| baseline | `fixed` (500/50) | 67 | 2 | 0 | 0 | 2 | 2 | **6** | Đơn giản, có overlap | Ranh giới rơi tùy tiện giữa hai Điều; Q2 chiếm cả 3 slot bằng doc gold mà không slot nào chứa đáp án |
+| baseline | `recursive` (400) | 92 | 2 | 1 | 0 | 2 | 2 | 7 | Tôn trọng ranh giới đoạn, dễ tune | Gom nhiều đoạn vào một chunk, tách khoản khỏi tiêu đề |
+| baseline | `sentence` (3 câu) | 69 | 2 | 1 | 0 | 2 | 2 | 7 | — | Gạch đầu dòng không có dấu chấm → gộp thành khối lớn |
 
 **Strategy nào tốt nhất cho chủ đề này? Tại sao?**
 
-> **`HeadingChunker` (9/10)**, và lý do là cấu trúc của dữ liệu chứ không phải sự tinh vi của thuật toán. Văn bản pháp luật đã được con người chia sẵn thành đơn vị ngữ nghĩa (Điều, Khoản); chunker chỉ cần **tôn trọng ranh giới có sẵn** thay vì áp một ranh giới nhân tạo theo số ký tự. Khác biệt cụ thể thấy ở Q2 và Q3: ba strategy cắt cứng đều để chunk chứa đáp án rớt khỏi top-1 hoặc rớt hẳn khỏi top-3, vì chúng tách phần dẫn của Điều khỏi danh sách liệt kê bên dưới.
+> **`ParagraphChunker` (9/10)**, và lý do là cấu trúc của dữ liệu chứ không phải sự tinh vi của thuật toán. Văn bản pháp luật đã được con người chia sẵn thành đơn vị ngữ nghĩa và **đánh dấu bằng dòng trống**; chunker chỉ cần tôn trọng ranh giới có sẵn thay vì áp một ranh giới nhân tạo theo số ký tự. Khác biệt cụ thể thấy ở Q2 và Q3: các strategy cắt cứng đều để chunk chứa đáp án rớt khỏi top-1 hoặc rớt hẳn khỏi top-3.
 >
-> Nhưng bài học quan trọng hơn: **ablation `keep_breadcrumb` (9 → 7) cho thấy phần lớn lợi thế đến từ việc gắn lại tiêu đề, không phải từ việc "chunk theo heading" nói chung.** Một `RecursiveChunker` bình thường mà biết gắn lại tiêu đề Điều vào mỗi mảnh nhiều khả năng cũng đạt kết quả tương đương — và đó là kỹ thuật **tái dùng được khi đổi domain** (FAQ, tài liệu sản phẩm, chính sách nội bộ đều có tiêu đề).
+> Nhưng hai ablation cho thấy điều quan trọng hơn: **ý tưởng "chia theo đoạn" tự nó chỉ đáng 7/10 — ngang hệt `recursive` và `sentence`.** Toàn bộ khoảng cách 2 điểm đến từ hai bước hậu xử lý: gộp đoạn ngắn (+2) và gắn lại tiêu đề (+1). Nói cách khác, **cách chọn ranh giới ít quan trọng hơn cách xử lý các trường hợp biên** — và hai kỹ thuật này tái dùng được ở mọi domain có cấu trúc, không riêng văn bản pháp luật.
 
 ---
 
@@ -167,8 +172,8 @@ Câu hỏi không nêu người hỏi là ai. Corpus có **hai tài liệu cùng
 | # | Strategy tốt nhất cho câu này | Có chunk liên quan trong top-3? | Ghi chú |
 |---|---|---|---|
 | 1 | Mọi strategy (đều 2/2) | Có, ở top-1 | Anchor "12 (mười hai) giờ" là chuỗi rất đặc trưng, không strategy nào trượt |
-| 2 | `heading` / `llm_semantic` (2) — `recursive`/`sentence` chỉ 1, **`fixed` được 0** | `fixed`: **KHÔNG** | Cắt cứng tách khoản 3 ra khỏi tiêu đề Điều 38 → chunk chứa "5 ngày" rớt khỏi top-3 |
-| 3 | `heading` / `llm_semantic` (1) — **các strategy khác 0** | `heading`: có (top-2). `fixed`/`recursive`/`sentence`: **KHÔNG** | Câu khó nhất. Xem failure case dưới |
+| 2 | `paragraph` (2) — `recursive`/`sentence` chỉ 1, **`fixed` được 0** | `fixed`: **KHÔNG** | Cắt cứng tách khoản 3 ra khỏi tiêu đề Điều 38 → chunk chứa "5 ngày" rớt khỏi top-3 |
+| 3 | `paragraph` (1) — **mọi strategy khác 0** | `paragraph`: có (top-2). `fixed`/`recursive`/`sentence`: **KHÔNG** | Câu khó nhất. Xem failure case dưới |
 | 4 | Mọi strategy (2/2, khi có filter) | Có, ở top-1 | Xem A/B bên dưới |
 | 5 | Mọi strategy (2/2) | Có, ở top-1 | Ngoại lệ nằm trọn trong Điều 31, ít bị cắt |
 
@@ -189,9 +194,9 @@ Nhóm chấm cả hai cách trên **cùng một lần chạy**:
 
 | Strategy | Doc-level | Chunk-level |
 |---|---|---|
-| heading | **10 / 10** | **9 / 10** |
-| heading_nobreadcrumb | **10 / 10** | 7 / 10 |
-| llm_semantic | **10 / 10** | **9 / 10** |
+| **paragraph** | **10 / 10** | **9 / 10** |
+| paragraph_noheading | **10 / 10** | 8 / 10 |
+| paragraph_nomerge | **10 / 10** | 7 / 10 |
 | fixed | **10 / 10** | **6 / 10** |
 | recursive | **10 / 10** | 7 / 10 |
 | sentence | **10 / 10** | 7 / 10 |
@@ -204,7 +209,7 @@ Nếu chỉ kiểm "gold `doc_id` có xuất hiện trong top-3 không", **cả 
 
 | Strategy | Top-1 thực tế | Điểm |
 |---|---|---|
-| `heading` | `nd52-quy-trinh...::chunk_4` (0.3495) — Điều 18 **khoản 3** ("cho phép khách hàng… hủy giao dịch") | 1 (chunk đúng nằm top-2) |
+| `paragraph` | `nd52-quy-trinh...::chunk_3` (0.3909) — Điều 18, **phần dẫn** ("phải có cơ chế cho phép khách hàng rà soát…") | 1 (chunk đúng nằm top-2, 0.2689) |
 | `fixed` | `nd52-quy-trinh...::chunk_2` (0.3691) — **Điều 17**, mảnh câu cụt "sử dụng chức năng đặt hàng trực tuyến được coi là đề nghị…" | **0** |
 | `recursive` / `sentence` | tương tự — đúng `doc_id`, sai section | **0** |
 
@@ -219,9 +224,9 @@ Nếu chỉ kiểm "gold `doc_id` có xuất hiện trong top-3 không", **cả 
 ### Kịch bản demo 6–8 phút
 
 1. **(1 phút)** Phạm vi, 9 tài liệu, schema metadata — nhấn `customer_role` và `document_version`.
-2. **(2 phút)** Mỗi thành viên giải thích strategy của mình; Hà demo `HeadingChunker` và ablation `keep_breadcrumb`.
+2. **(2 phút)** Mỗi thành viên giải thích strategy của mình; Hà demo `ParagraphChunker` và hai ablation (`noheading`, `nomerge`).
 3. **(3 phút)** Bảng so sánh + **A/B metadata filter ở Q4** + **failure case Q3** với bằng chứng top-k.
-4. **(1–2 phút)** Chạy live: `EMBEDDING_PROVIDER=lexical python bench.py heading` cho Q4.
+4. **(1–2 phút)** Chạy live: `EMBEDDING_PROVIDER=lexical python bench.py paragraph` cho Q4.
 
 ### 3 phân tích hay nhất nhóm sẽ trình bày
 
@@ -233,7 +238,7 @@ Nếu chỉ kiểm "gold `doc_id` có xuất hiện trong top-3 không", **cả 
 
 > Cùng một corpus, cùng 5 câu hỏi, cùng embedder — chỉ đổi cách chia nhỏ tài liệu mà khoảng cách là 6 vs 9 điểm, và ở hai câu hỏi cụ thể (Q2, Q3) là **có đáp án trong top-3 hay hoàn toàn không có**. Nhưng nhóm cũng học được điều ngược lại: khoảng cách 3 điểm giữa các chunker nhỏ hơn nhiều so với khoảng cách 6–7 điểm giữa mock và lexical embedding. Thứ tự ưu tiên khi làm thật nên là: **dữ liệu sạch có provenance → embedding phù hợp ngôn ngữ → metadata schema → mới đến tinh chỉnh chunking.**
 >
-> Ngoài ra, ablation `keep_breadcrumb` cho thấy phần lớn lợi thế của "chunk theo heading" thực ra đến từ một chi tiết nhỏ: **gắn lại tiêu đề vào mảnh con**. Đây là kỹ thuật rẻ và tái dùng được ở mọi domain có cấu trúc tiêu đề.
+> Ngoài ra, hai ablation cho thấy phần lớn lợi thế của "chia theo đoạn" thực ra đến từ hai chi tiết nhỏ: **gộp đoạn quá ngắn** và **gắn lại tiêu đề**. Bản thuần túy chỉ được 7/10, ngang baseline. Đây là kỹ thuật rẻ và tái dùng được ở mọi domain có cấu trúc.
 
 ### Nếu làm lại, nhóm sẽ thay đổi gì
 
@@ -266,7 +271,7 @@ python -m pytest tests -v
 python -c "..."   # script trong README mục 3, KEY='customer_role'
 
 # 3. Benchmark strategy cá nhân
-EMBEDDING_PROVIDER=lexical python bench.py heading
+EMBEDDING_PROVIDER=lexical python bench.py paragraph
 
 # 4. Toàn bộ strategy + bảng so sánh
 EMBEDDING_PROVIDER=lexical python bench.py --all > report/bench_output_lexical.txt

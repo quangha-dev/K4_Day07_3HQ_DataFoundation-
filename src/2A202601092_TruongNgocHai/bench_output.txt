@@ -1,5 +1,5 @@
 ==============================================================================
-STRATEGY: clause   [TV2 (chua dien ten)]
+STRATEGY: clause   [Trương Ngọc Hải]
 PARAMS  : max_chunk_size=700, max_sentences_per_chunk=3, min_chunk_size=120
 CHUNKS  : 74 chunk tu data/k4_ecommerce
 ------------------------------------------------------------------------------

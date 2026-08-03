@@ -147,11 +147,11 @@ tests/test_solution.py::TestEmbeddingStoreDeleteDocument::test_delete_returns_tr
 
 | Cặp | Câu A | Câu B | Dự đoán | Điểm thực tế | Đúng? |
 |------|-----------|-----------|---------|--------------|-------|
-| 1 | | | cao / thấp | | |
-| 2 | | | cao / thấp | | |
-| 3 | | | cao / thấp | | |
-| 4 | | | cao / thấp | | |
-| 5 | | | cao / thấp | | |
+| 1 | Tôi thích học trí tuệ nhân tạo.| Tôi rất hứng thú với việc nghiên cứu AI. | cao | 0.615351  | Đúng |
+| 2 | Hôm nay trời nắng và tôi đi dạo công viên. | Thời tiết đẹp nên tôi ra công viên đi bộ.| cao  | Đúng | 0.696122 |
+| 3 | Món phở bò này rất ngon và thơm. | Bát phở bò có hương vị thơm ngon. | cao| Đúng | 0.788058 |
+| 4 | Tôi thích học trí tuệ nhân tạo. | Mẹ tôi đang mua rau ngoài chợ. | thấp | Đúng |  0.301538|
+| 5 | Em bé đang chơi đồ chơi trong phòng khách. | Giá vàng trên thị trường vừa tăng mạnh. | thấp | Đúng|0.302203 |
 
 **Kết quả nào bất ngờ nhất? Điều này nói gì về cách embeddings biểu diễn ý nghĩa?**
 > *Viết 2-3 câu:*
@@ -164,16 +164,20 @@ Chạy **5 câu hỏi đánh giá của nhóm** trên mã nguồn cá nhân củ
 
 | # | Câu hỏi (Query) | Top-1 Chunk truy xuất được (tóm tắt) | Điểm Score | Có liên quan không? (Relevant) | Câu trả lời của Agent (tóm tắt) |
 |---|-------|--------------------------------|-------|-----------|------------------------|
-| 1 | | | | | |
-| 2 | | | | | |
-| 3 | | | | | |
-| 4 | | | | | |
-| 5 | | | | | |
+| 1 | Nếu người bán không công bố rõ thời hạn trả lời, sau bao lâu đề nghị giao kết hợp đồng của khách hàng hết hiệu lực? | Quy định về trường hợp phát sinh chậm trễ trong giao hàng hoặc cung ứng dịch vụ (`seller-listing`, chunk 8). | 0.2810 | Không | Mock Agent trả lời dựa trên quy định xử lý việc giao hàng/cung ứng dịch vụ bị chậm trễ, không xác định được thời hạn 12 giờ. |
+| 2 | Sàn giao dịch thương mại điện tử phải thông báo trước bao nhiêu ngày khi thay đổi quy chế hoạt động? | Điểm mới của Nghị định 85/2021/NĐ-CP về bảo vệ quyền lợi người tiêu dùng (`nd85-2021-diem-moi-bao-ve-nguoi-tieu-dung`, chunk 0). | 0.2607 | Không | Mock Agent tóm lược nội dung sửa đổi, bổ sung của Nghị định 85/2021/NĐ-CP nhưng không đưa ra được thời hạn ít nhất 5 ngày. |
+| 3 | Cơ chế rà soát và xác nhận nội dung hợp đồng phải hiển thị những thông tin gì cho khách hàng trước khi đặt hàng? | Biện pháp bảo đảm an toàn thông tin và bảo mật dữ liệu trong hoạt động sàn TMĐT (`nd52-trach-nhiem-san-tmdt`, chunk 6). | 0.3999 | Không | Mock Agent trả lời về bảo đảm an toàn thông tin, không nêu được các thông tin hợp đồng cần hiển thị như tổng giá trị hợp đồng. |
+| 4 | Chính sách kiểm hàng có phải là một điều kiện giao dịch chung bắt buộc phải công bố không? | Quy định về chủ thể của hoạt động thương mại điện tử theo Nghị định 85/2021/NĐ-CP (`nd85-2021-diem-moi-bao-ve-nguoi-tieu-dung`, chunk 1; có lọc `customer_role=buyer`). | 0.3143 | Không ở top-1; Có trong top-3 (chunk 5) | Mock Agent chủ yếu tóm lược quy định về chủ thể hoạt động TMĐT; chunk liên quan ở top-3 cho biết chính sách kiểm hàng cần được công bố để người tiêu dùng biết trước khi giao dịch. |
+| 5 | Website niêm yết giá mà không nói rõ đã bao gồm thuế và phí vận chuyển chưa thì hiểu thế nào? | Điều kiện và thủ tục thông báo, đăng ký website thương mại điện tử (`nd52-dang-ky-thong-bao-website`, chunk 0). | 0.2572 | Không | Mock Agent trả lời về điều kiện thiết lập website TMĐT bán hàng, không xác định được rằng giá được hiểu là đã bao gồm mọi chi phí. |
 
-**Bao nhiêu câu hỏi trả về chunk có liên quan trong top-3?** __ / 5
+**Bao nhiêu câu hỏi trả về chunk có liên quan trong top-3?** 1 / 5
+
+**Nhận xét kết quả:**
+Kết quả truy xuất còn thấp vì nhiều chunk có nội dung cùng chủ đề thương mại điện tử nhưng không chứa đúng điều khoản hoặc số liệu mà câu hỏi yêu cầu. Điểm tương đồng của các kết quả top-1 cũng khá thấp (từ 0.2572 đến 0.3999), cho thấy chiến lược chia theo mệnh đề hiện tại có thể làm tách rời câu hỏi khỏi phần chứa đáp án; tuy nhiên, việc lọc theo `customer_role=buyer` đã giúp câu 4 đưa chunk liên quan vào top-3.
 
 **Điều hay nhất tôi học được từ thành viên khác / nhóm khác (qua demo):**
-> *Viết 2-3 câu:*
+> Chất lượng truy xuất phụ thuộc nhiều vào cách chia chunk, không chỉ vào mô hình embedding. Việc giữ tiêu đề và điều khoản liên quan trong cùng một chunk, đồng thời sử dụng metadata filter phù hợp, có thể giảm các kết quả cùng chủ đề nhưng sai nội dung và giúp Agent trả lời chính xác hơn.
+
 
 ---
 
@@ -181,9 +185,9 @@ Chạy **5 câu hỏi đánh giá của nhóm** trên mã nguồn cá nhân củ
 
 | Tiêu chí | Điểm tự đánh giá |
 |----------|-------------------|
-| Khởi động (Warm-up) | / 5 |
-| Hướng tiếp cận của tôi (My Approach) | / 10 |
-| Hoàn thiện code (Core Implementation — tests) | / 30 |
-| Dự đoán độ tương tự (Similarity Predictions) | / 5 |
-| Kết quả truy xuất của tôi (Competition Results) | / 10 |
-| **Tổng phần cá nhân** | **/ 60** |
+| Khởi động (Warm-up) | 5/ 5 |
+| Hướng tiếp cận của tôi (My Approach) | 10/ 10 |
+| Hoàn thiện code (Core Implementation — tests) | 30/ 30 |
+| Dự đoán độ tương tự (Similarity Predictions) | 5/ 5 |
+| Kết quả truy xuất của tôi (Competition Results) | 5/ 10 |
+| **Tổng phần cá nhân** | **55 / 60** |

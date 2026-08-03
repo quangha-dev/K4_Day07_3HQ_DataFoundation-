@@ -1,0 +1,77 @@
+==============================================================================
+STRATEGY: clause   [TV2 (chua dien ten)]
+PARAMS  : max_chunk_size=700, max_sentences_per_chunk=3, min_chunk_size=120
+CHUNKS  : 74 chunk tu data/k4_ecommerce
+------------------------------------------------------------------------------
+
+[Q1] (so lieu) Nếu người bán không công bố rõ thời hạn trả lời, sau bao lâu đề nghị giao kết hợp đồng của khách hàng hết hiệu lực?
+  gold doc : nd52-quy-trinh-dat-hang-truc-tuyen   anchor: ['12 (mười hai) giờ']
+  --- KHONG FILTER ---
+    1. score=+0.2810  doc_id=seller-listing  chunk=8  role=seller
+       2. Trường hợp phát sinh chậm trễ trong việc giao hàng hoặc cung ứng dịch vụ, thương nhân, tổ chức, cá nhân phả...
+    2. score=+0.2166  doc_id=nd52-trach-nhiem-san-tmdt  chunk=2  role=both
+       Trách nhiệm của thương nhân, tổ chức cung cấp dịch vụ sàn giao dịch thương mại điện tử 1. Đăng ký thiết lập we...
+    3. score=+0.2016  doc_id=nd52-quy-trinh-dat-hang-truc-tuyen  chunk=4  role=buyer
+       Hiển thị cho khách hàng những thông tin về cách thức trả lời chấp nhận đề nghị giao kết hợp đồng và thời hạn t...
+    -> diem chunk-level: 0 — khong chunk nao chua anchor (DUNG doc_id nhung SAI section)
+    -> agent: [MOCK LLM] Tra loi dua tren context: [1] 2. Trường hợp phát sinh chậm trễ trong việc giao hàng hoặc cung ứng dịch vụ, thương nhân, tổ chức, cá nhân phải có thông tin kịp thời cho khách hàng và tạo cơ hội để khách hàng có
+
+[Q2] (dieu kien) Sàn giao dịch thương mại điện tử phải thông báo trước bao nhiêu ngày khi thay đổi quy chế hoạt động?
+  gold doc : nd52-quy-che-hoat-dong-san   anchor: ['ít nhất 5 ngày']
+  --- KHONG FILTER ---
+    1. score=+0.2607  doc_id=nd85-2021-diem-moi-bao-ve-nguoi-tieu-dung  chunk=0  role=buyer
+       # Điểm mới về bảo vệ quyền lợi người tiêu dùng trong Nghị định 85/2021/NĐ-CP Ngày 25/9/2021, Chính phủ ban hàn...
+    2. score=+0.2524  doc_id=nd85-2021-diem-moi-bao-ve-nguoi-tieu-dung  chunk=6  role=buyer
+       Trách nhiệm giải quyết khiếu nại của người tiêu dùng Khoản 11 Điều 36 được bổ sung thêm quy định: - Chỉ định đ...
+    3. score=+0.2499  doc_id=nd52-quy-trinh-dat-hang-truc-tuyen  chunk=2  role=buyer
+       ## Điều 18. Rà soát và xác nhận nội dung hợp đồng Website thương mại điện tử phải có cơ chế cho phép khách hàn...
+    -> diem chunk-level: 0 — khong chunk nao chua anchor
+    -> agent: [MOCK LLM] Tra loi dua tren context: [1] # Điểm mới về bảo vệ quyền lợi người tiêu dùng trong Nghị định 85/2021/NĐ-CP | Ngày 25/9/2021, Chính phủ ban hành Nghị định số 85/2021/NĐ-CP sửa đổi, bổ sung một số điều của Nghị 
+
+[Q3] (quy trinh) Cơ chế rà soát và xác nhận nội dung hợp đồng phải hiển thị những thông tin gì cho khách hàng trước khi đặt hàng?
+  gold doc : nd52-quy-trinh-dat-hang-truc-tuyen   anchor: ['Tổng giá trị của hợp đồng']
+  --- KHONG FILTER ---
+    1. score=+0.3999  doc_id=nd52-trach-nhiem-san-tmdt  chunk=6  role=both
+       7. Áp dụng các biện pháp cần thiết để đảm bảo an toàn thông tin liên quan đến bí mật kinh doanh của thương nhâ...
+    2. score=+0.3683  doc_id=nd52-trach-nhiem-san-tmdt  chunk=7  role=both
+       Có biện pháp xử lý kịp thời khi phát hiện hoặc nhận được phản ánh về hành vi kinh doanh vi phạm pháp luật trên...
+    3. score=+0.2921  doc_id=nd52-dang-ky-thong-bao-website  chunk=9  role=seller
+       2. Hồ sơ đăng ký bao gồm: a) Đơn đăng ký thiết lập website cung cấp dịch vụ thương mại điện tử; b) Bản sao có ...
+    -> diem chunk-level: 0 — khong chunk nao chua anchor
+    -> agent: [MOCK LLM] Tra loi dua tren context: [1] 7. Áp dụng các biện pháp cần thiết để đảm bảo an toàn thông tin liên quan đến bí mật kinh doanh của thương nhân, tổ chức, cá nhân và thông tin cá nhân của người tiêu dùng. 8. | [2
+
+[Q4] (liet ke + FILTER BAT BUOC) Chính sách kiểm hàng có phải là một điều kiện giao dịch chung bắt buộc phải công bố không?
+  gold doc : nd85-2021-diem-moi-bao-ve-nguoi-tieu-dung   anchor: ['chính sách kiểm hàng']
+  --- KHONG FILTER ---
+    1. score=+0.3143  doc_id=nd85-2021-diem-moi-bao-ve-nguoi-tieu-dung  chunk=1  role=buyer
+       Chủ thể của hoạt động thương mại điện tử Khoản 6 Điều 1 Nghị định 85/2021/NĐ-CP sửa đổi khoản 5 Điều 24 Nghị đ...
+    2. score=+0.2725  doc_id=returns-policy  chunk=1  role=seller
+       Thương nhân, tổ chức, cá nhân phải công bố những điều kiện giao dịch chung đối với hàng hóa hoặc dịch vụ giới ...
+    3. score=+0.2107  doc_id=nd52-trach-nhiem-san-tmdt  chunk=3  role=both
+       Xây dựng và công bố công khai trên website quy chế hoạt động của sàn giao dịch thương mại điện tử theo quy địn...
+    -> diem chunk-level: 0 — khong chunk nao chua anchor (DUNG doc_id nhung SAI section)
+    -> agent: [MOCK LLM] Tra loi dua tren context: [1] Chủ thể của hoạt động thương mại điện tử | Khoản 6 Điều 1 Nghị định 85/2021/NĐ-CP sửa đổi khoản 5 Điều 24 Nghị định 52/2013/NĐ-CP: "Các thương nhân, tổ chức cung cấp hạ tầng kỹ th
+  --- CO FILTER {'customer_role': 'buyer'} ---
+    1. score=+0.3143  doc_id=nd85-2021-diem-moi-bao-ve-nguoi-tieu-dung  chunk=1  role=buyer
+       Chủ thể của hoạt động thương mại điện tử Khoản 6 Điều 1 Nghị định 85/2021/NĐ-CP sửa đổi khoản 5 Điều 24 Nghị đ...
+    2. score=+0.1766  doc_id=nd52-bao-ve-thong-tin-ca-nhan  chunk=8  role=buyer
+       Đơn vị thu thập thông tin phải có cơ chế riêng để chủ thể thông tin được lựa chọn việc cho phép hoặc không cho...
+    3. score=+0.1463  doc_id=nd85-2021-diem-moi-bao-ve-nguoi-tieu-dung  chunk=5  role=buyer
+       Quy định này giúp người tiêu dùng hiểu rõ về chính sách kiểm hàng của từng doanh nghiệp trước khi quyết định g...
+    -> diem chunk-level: 1 — anchor nam o top-3, khong phai top-1
+    -> agent: [MOCK LLM] Tra loi dua tren context: [1] Chủ thể của hoạt động thương mại điện tử | Khoản 6 Điều 1 Nghị định 85/2021/NĐ-CP sửa đổi khoản 5 Điều 24 Nghị định 52/2013/NĐ-CP: "Các thương nhân, tổ chức cung cấp hạ tầng kỹ th
+    -> A/B: ket qua KHAC NHAU
+
+[Q5] (ngoai le) Website niêm yết giá mà không nói rõ đã bao gồm thuế và phí vận chuyển chưa thì hiểu thế nào?
+  gold doc : seller-listing   anchor: ['được hiểu là đã bao gồm mọi chi phí']
+  --- KHONG FILTER ---
+    1. score=+0.2572  doc_id=nd52-dang-ky-thong-bao-website  chunk=0  role=seller
+       # Điều kiện và thủ tục thông báo, đăng ký website thương mại điện tử ## Điều 52. Điều kiện thiết lập website t...
+    2. score=+0.2442  doc_id=nd52-bao-ve-thong-tin-ca-nhan  chunk=11  role=buyer
+       3. Trong trường hợp hệ thống thông tin bị tấn công làm phát sinh nguy cơ mất thông tin của người tiêu dùng, đơ...
+    3. score=+0.2317  doc_id=nd52-trach-nhiem-nguoi-ban-tren-san  chunk=3  role=seller
+       5. Cung cấp thông tin về tình hình kinh doanh của mình khi có yêu cầu của cơ quan nhà nước có thẩm quyền để ph...
+    -> diem chunk-level: 0 — khong chunk nao chua anchor
+    -> agent: [MOCK LLM] Tra loi dua tren context: [1] # Điều kiện và thủ tục thông báo, đăng ký website thương mại điện tử | ## Điều 52. Điều kiện thiết lập website thương mại điện tử bán hàng | 1. Là thương nhân, tổ chức có chức năn
+------------------------------------------------------------------------------
+TONG DIEM clause: 1/10  (chunks=74)

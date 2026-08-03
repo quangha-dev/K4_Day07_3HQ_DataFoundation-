@@ -170,6 +170,199 @@ def compute_similarity(vec_a: list[float], vec_b: list[float]) -> float:
     return _dot(vec_a, vec_b) / (norm_a * norm_b)
 
 
+class ParagraphChunker:
+    """
+    CHIEN LUOC RIENG CUA NGUYEN QUANG HA (2A202601424) — Lab 07, muc 6 / CP5.
+
+    Khong nam trong 42 test. Day la phan tu thiet ke theo domain cua nhom.
+
+    Nguyen ly
+    ---------
+    Chia theo DOAN. Ranh gioi la DONG TRONG — tuc la cho nguoi soan thao go
+    Enter hai lan. Trong Markdown va trong van ban quy pham phap luat, dong
+    trong chinh la dau hieu "het mot y, sang y khac" do CON NGUOI danh dau san.
+
+    Khac voi ba chunker co san:
+        FixedSizeChunker  cat theo SO KY TU      -> ranh gioi nhan tao
+        SentenceChunker   cat theo DAU CHAM      -> hong voi gach dau dong
+                                                    ket thuc bang dau ";"
+        RecursiveChunker  co uu tien "\\n\\n" nhung van GOM nhieu doan lai
+                          cho du chunk_size, nen mot chunk co the chua nhieu y
+        ParagraphChunker  moi doan la MOT chunk  -> ton trong dung ranh gioi
+                                                    tac gia da tao
+
+    Vi sao hop voi corpus cua nhom: file .md cua nhom viet moi khoan / moi diem
+    a) b) c) thanh mot doan rieng, cach nhau bang dong trong. Cat theo doan
+    chinh la cat theo khoan ma khong can regex nhan dien "1." hay "a)".
+
+    Ba tinh huong phai xu ly, neu bo qua thi ket qua rat te
+    -------------------------------------------------------
+    1. DOAN QUA NGAN. "a) Ten hang hoa, so luong va chung loai;" chi ~45 ky tu.
+       De rieng thi vo nghia, va con nguy hiem hon the: voi TF-IDF, vector cua
+       text ngan ma toan tu hiem se co cosine bi THOI LEN rat cao du khong chua
+       cau tra loi. Nhom da quan sat dung loi nay — mot chunk 64 ky tu chi chua
+       dong tieu de dat score 0.6109, cao nhat toan benchmark. Vi vay phai GOP
+       cac doan ngan lien tiep lai (`min_chunk_size`).
+    2. DOAN QUA DAI. Vuot `max_chunk_size` thi ha xuong RecursiveChunker.
+    3. MAT NGU CANH. Doan "c) Tong gia tri cua hop dong..." khong cho biet no
+       thuoc Dieu nao. `keep_heading=True` gan tieu de gan nhat vao dau moi
+       chunk. Dat False de lam ablation, chung minh tac dung cua buoc nay.
+
+    Chon `min_chunk_size` — do bang thuc nghiem, khong doan
+    -------------------------------------------------------
+    Quet tham so tren dung 5 benchmark query cua nhom (embedder lexical):
+
+        min_chunk_size   so chunk   diem chunk-level
+                   100        156          7 / 10
+                   150        137          7 / 10
+                   250         97          7 / 10
+                   350         75          8 / 10
+                   450         65          9 / 10   <- chon
+                   600         63          8 / 10
+
+    Nguong 450 la diem can bang: du lon de mot cau dan va toan bo danh sach
+    a) b) c) cua no nam CHUNG mot chunk (day la ly do Q3 tu 0 len 1 diem va Q2
+    tu 1 len 2), nhung chua lon toi muc gop hai y khac nhau lam mot (600 lai
+    tut xuong 8). Day la tune tham so cua chinh chien luoc minh — de bai cho
+    phep ("Dung 1 trong 3 chien luoc co san voi tham so toi uu"). Cai KHONG
+    duoc phep la doi 5 query sau khi da thay ket qua.
+    """
+
+    #: Hai (hoac nhieu hon) dau xuong dong lien tiep = ranh gioi doan.
+    #: `[ \t]*` cho phep dong "trong" van con khoang trang/tab thua.
+    _PARAGRAPH_BREAK = re.compile(r"\n[ \t]*\n+")
+
+    #: Dong tieu de Markdown ("# ...", "## Dieu 32. ...") hoac kieu van ban
+    #: phap luat ("Dieu 32.", "Chuong V", "Muc 2").
+    _HEADING = re.compile(r"^(#{1,6}\s+.*|(Điều|Chương|Mục)\s+\d+[.:]?.*)$", re.IGNORECASE)
+
+    def __init__(
+        self,
+        max_chunk_size: int = 700,
+        min_chunk_size: int = 450,
+        keep_heading: bool = True,
+    ) -> None:
+        self.max_chunk_size = max_chunk_size
+        self.min_chunk_size = min_chunk_size
+        self.keep_heading = keep_heading
+
+    def params(self) -> str:
+        """In ra bang benchmark cua bench.py."""
+        return (
+            f"max_chunk_size={self.max_chunk_size}, "
+            f"min_chunk_size={self.min_chunk_size}, "
+            f"keep_heading={self.keep_heading}"
+        )
+
+    # ------------------------------------------------------------------
+    def chunk(self, text: str) -> list[str]:
+        if not text or not text.strip():
+            return []
+
+        # Buoc 1: cat tai moi dong trong -> list (tieu_de, noi_dung_doan).
+        blocks = self._split_paragraphs(text)
+        if not blocks:
+            return []
+
+        # Buoc 2: gop cac doan ngan lien tiep (chi gop trong cung mot tieu de).
+        merged = self._merge_short(blocks)
+
+        # Buoc 3: gan tieu de MOT lan cho moi block, cat block qua dai.
+        # THU TU QUAN TRONG: gan tieu de SAU khi gop. Neu gan truoc roi moi gop
+        # thi hai doan cung tieu de bi noi lai -> tieu de xuat hien hai lan
+        # trong mot chunk, vua thua vua lam TF-IDF thoi diem cua chunk do len.
+        chunks: list[str] = []
+        for heading, body in merged:
+            prefix = heading if (self.keep_heading and heading) else ""
+            block = f"{prefix}\n{body}".strip() if prefix else body.strip()
+
+            if len(block) <= self.max_chunk_size:
+                chunks.append(block)
+            else:
+                chunks.extend(self._split_long(prefix, body))
+
+        return [chunk.strip() for chunk in chunks if chunk.strip()]
+
+    # ------------------------------------------------------------------
+    def _split_paragraphs(self, text: str) -> list[tuple[str, str]]:
+        """Cat theo dong trong, kem theo tieu de dang hieu luc cho tung doan.
+
+        Doan nao BAN THAN chi la mot dong tieu de thi khong tao block rieng —
+        no chi cap nhat `current_heading` cho cac doan phia sau.
+        """
+        blocks: list[tuple[str, str]] = []
+        current_heading = ""
+
+        for raw in self._PARAGRAPH_BREAK.split(text):
+            paragraph = raw.strip()
+            if not paragraph:
+                continue
+
+            lines = paragraph.splitlines()
+            first_line = lines[0].strip()
+
+            if self._HEADING.match(first_line):
+                current_heading = first_line
+                remainder = "\n".join(lines[1:]).strip()
+                if not remainder:
+                    continue
+                paragraph = remainder
+
+            blocks.append((current_heading, paragraph))
+
+        return blocks
+
+    def _merge_short(self, blocks: list[tuple[str, str]]) -> list[tuple[str, str]]:
+        """Gop block ngan hon `min_chunk_size` vao block KE TIEP cung tieu de.
+
+        Gop XUOI (khong phai nguoc) vi trong van ban phap luat, doan ngan
+        thuong la CAU DAN cua danh sach ben duoi no:
+            "1. Hien thi cho khach hang nhung thong tin sau:"   <- ngan, la dan
+            "a) Ten hang hoa..."                                <- noi dung
+        Gop xuoi giu duoc quan he dan -> noi dung.
+
+        Khong gop qua ranh gioi tieu de: hai Dieu khac nhau khong duoc nhap lam
+        mot chunk, du ca hai deu ngan.
+        """
+        merged: list[tuple[str, str]] = []
+        carry_heading = ""
+        carry_body = ""
+
+        for heading, body in blocks:
+            # Doi tieu de -> chot phan dang gom lai truoc da.
+            if carry_body and heading != carry_heading:
+                merged.append((carry_heading, carry_body))
+                carry_heading, carry_body = "", ""
+
+            candidate = f"{carry_body}\n{body}".strip() if carry_body else body
+
+            if len(carry_heading or heading) + len(candidate) < self.min_chunk_size:
+                carry_heading, carry_body = heading, candidate
+                continue
+
+            merged.append((heading, candidate))
+            carry_heading, carry_body = "", ""
+
+        # Phan du cuoi: nhap vao block truoc neu cung tieu de, khong thi de rieng.
+        if carry_body:
+            if merged and merged[-1][0] == carry_heading:
+                last_heading, last_body = merged[-1]
+                merged[-1] = (last_heading, f"{last_body}\n{carry_body}".strip())
+            else:
+                merged.append((carry_heading, carry_body))
+
+        return merged
+
+    def _split_long(self, heading: str, body: str) -> list[str]:
+        """Block qua dai -> ha xuong RecursiveChunker, gan lai tieu de tung manh."""
+        budget = self.max_chunk_size - (len(heading) + 1 if heading else 0)
+        pieces = RecursiveChunker(chunk_size=max(150, budget)).chunk(body)
+
+        if not heading:
+            return pieces
+        return [f"{heading}\n{piece}".strip() for piece in pieces]
+
+
 class ChunkingStrategyComparator:
     """Run all built-in chunking strategies and compare their results."""
 

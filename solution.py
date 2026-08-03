@@ -83,6 +83,10 @@ RecursiveChunker = _pkg.RecursiveChunker
 ChunkingStrategyComparator = _pkg.ChunkingStrategyComparator
 compute_similarity = _pkg.compute_similarity
 
+# Chien luoc rieng cua tung nguoi (khong nam trong 42 test). Dung getattr vi
+# moi thanh vien dat ten class khac nhau — ai chua viet thi bang None.
+ParagraphChunker = getattr(_pkg, "ParagraphChunker", None)
+
 EmbeddingStore = _pkg.EmbeddingStore
 KnowledgeBaseAgent = _pkg.KnowledgeBaseAgent
 
@@ -100,6 +104,7 @@ __all__ = [
     "FixedSizeChunker",
     "SentenceChunker",
     "RecursiveChunker",
+    "ParagraphChunker",
     "ChunkingStrategyComparator",
     "compute_similarity",
     "EmbeddingStore",

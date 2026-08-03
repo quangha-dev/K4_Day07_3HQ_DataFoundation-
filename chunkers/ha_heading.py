@@ -30,7 +30,7 @@ from __future__ import annotations
 
 import re
 
-from src.chunking import RecursiveChunker
+from solution import RecursiveChunker
 
 from .base import BaseChunker, attach, clean, is_heading
 

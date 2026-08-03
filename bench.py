@@ -34,8 +34,8 @@ from dotenv import load_dotenv
 from chunkers import OWNERS, STRATEGIES, TEAM_STRATEGIES, build
 from chunkers.ha_heading import LLMSemanticChunker
 from ingest import build_knowledge_base
-from src.agent import KnowledgeBaseAgent
-from src.embeddings import (
+from solution import KnowledgeBaseAgent
+from solution import (
     EMBEDDING_PROVIDER_ENV,
     LOCAL_EMBEDDING_MODEL,
     OPENAI_EMBEDDING_MODEL,

@@ -28,9 +28,8 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Callable
 
-from src.chunking import FixedSizeChunker
-from src.models import Document
-from src.store import EmbeddingStore
+# `solution` tu tro ve goi bai lam ca nhan trong src/<MSSV>-<HoTen>/.
+from solution import Document, EmbeddingStore, FixedSizeChunker
 
 TEXT_EXTENSIONS = {".md", ".txt"}
 

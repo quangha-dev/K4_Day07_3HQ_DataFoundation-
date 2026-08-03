@@ -3,7 +3,7 @@
 **Họ tên:** Nguyễn Quang Hà
 **MSSV:** 2A202601424
 **Lớp:** K4 — biến thể Chính sách thương mại điện tử
-**Nhóm:** [điền tên nhóm]
+**Nhóm:** 3HQ
 **Ngày:** 03/08/2026
 **Strategy cá nhân:** `ParagraphChunker` — chia theo **đoạn**, ranh giới là **dòng trống** (hai lần Enter). Nằm trong `src/2A202601424-NguyenQuangHa/chunking.py`.
 
@@ -366,7 +366,9 @@ Bài học tôi rút ra: ý tưởng chunking chỉ là một nửa: **xử lý 
 - **`min_chunk_size=450` được chọn bằng cách quét trên chính 5 query dùng để chấm.** Nói thẳng: con số này có thể đang **overfit** vào 5 câu hỏi cụ thể của nhóm. Với bộ query khác, 350 hay 600 có thể tốt hơn. Muốn kết luận chắc chắn thì cần tách tập tune và tập đánh giá, mà 5 query thì quá ít để tách.
 - Tôi không cài được `requirements-local.txt` (PyTorch) trong thời lượng lab, nên chưa có số liệu với embedding đa ngữ thật.
 
-**Điều hay nhất tôi học được từ nhóm:** [điền sau demo]
+**Điều hay nhất tôi học được từ nhóm:** Từ `StructureChunker` của bạn Quang, tôi học được rằng **đơn vị ngữ nghĩa quan trọng hơn ranh giới ngữ pháp** — tôi chọn "một khoản" vì nó là ranh giới dễ nhận biết nhất, nhưng đơn vị mà người đọc thực sự cần để trả lời một câu hỏi lại là "cả Điều", và đó chính xác là chỗ tôi mất điểm ở Q3. Từ bạn Hải: `RecursiveChunker` có sẵn, chỉ đổi `chunk_size` 400 → 650 mà đạt 9/10 bằng đúng chiến lược tôi tự viết — tune tham số nên làm **trước** khi viết code mới.
+
+> **Lưu ý:** Bản đầy đủ theo đúng biểu mẫu của đề nằm ở `report/2A202601424_NguyenQuangHa.md`. File này là bản ghi chép chi tiết hơn của cùng một nội dung.
 
 ---
 

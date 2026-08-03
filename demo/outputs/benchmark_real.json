@@ -1,0 +1,761 @@
+{
+  "model": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+  "strategies": [
+    {
+      "key": "paragraph_ha",
+      "label": "Theo đoạn · Hà",
+      "owner": "Nguyễn Quang Hà · 2A202601424",
+      "method": "ParagraphChunker",
+      "parameters": "max_chunk_size=700 · min_chunk_size=450 · keep_heading=True",
+      "chunks": 65,
+      "build_seconds": 1.2361,
+      "total_points": 10,
+      "queries": [
+        {
+          "id": "Q1",
+          "kind": "so lieu",
+          "question": "Nếu người bán không công bố rõ thời hạn trả lời, sau bao lâu đề nghị giao kết hợp đồng của khách hàng hết hiệu lực?",
+          "gold_doc_id": "nd52-quy-trinh-dat-hang-truc-tuyen",
+          "anchors": [
+            "12 (mười hai) giờ"
+          ],
+          "filter": null,
+          "hit_rank": 1,
+          "points": 2,
+          "results": [
+            {
+              "rank": 1,
+              "id": "nd52-quy-trinh-dat-hang-truc-tuyen::chunk_8",
+              "score": 0.842514,
+              "customer_role": "buyer",
+              "preview": "## Điều 20. Chấm dứt đề nghị giao kết hợp đồng 2. Trường hợp thương nhân, tổ chức, cá nhân bán hàng không công bố rõ thời hạn trả lời đề nghị giao kết hợp đồng, nếu trong vòng 12 (mười hai) giờ kể từ khi gửi đề nghị giao kết hợp đồng, khách hàng không nhận đượ"
+            },
+            {
+              "rank": 2,
+              "id": "nd52-quy-trinh-dat-hang-truc-tuyen::chunk_7",
+              "score": 0.810041,
+              "customer_role": "buyer",
+              "preview": "## Điều 20. Chấm dứt đề nghị giao kết hợp đồng 1. Trường hợp thương nhân, tổ chức, cá nhân bán hàng có công bố thời hạn trả lời đề nghị giao kết hợp đồng, nếu hết thời hạn này mà khách hàng vẫn không được trả lời thì đề nghị giao kết hợp đồng của khách hàng ch"
+            },
+            {
+              "rank": 3,
+              "id": "nd52-quy-trinh-dat-hang-truc-tuyen::chunk_9",
+              "score": 0.68859,
+              "customer_role": "buyer",
+              "preview": "## Điều 21. Thời điểm giao kết hợp đồng Thời điểm giao kết hợp đồng khi sử dụng chức năng đặt hàng trực tuyến trên website thương mại điện tử là thời điểm khách hàng nhận được trả lời của thương nhân, tổ chức, cá nhân bán hàng chấp nhận đề nghị giao kết hợp đồ"
+            }
+          ]
+        },
+        {
+          "id": "Q2",
+          "kind": "dieu kien",
+          "question": "Sàn giao dịch thương mại điện tử phải thông báo trước bao nhiêu ngày khi thay đổi quy chế hoạt động?",
+          "gold_doc_id": "nd52-quy-che-hoat-dong-san",
+          "anchors": [
+            "ít nhất 5 ngày"
+          ],
+          "filter": null,
+          "hit_rank": 1,
+          "points": 2,
+          "results": [
+            {
+              "rank": 1,
+              "id": "nd52-quy-che-hoat-dong-san::chunk_3",
+              "score": 0.805349,
+              "customer_role": "both",
+              "preview": "## Điều 38. Quy chế hoạt động của sàn giao dịch thương mại điện tử l) Biện pháp xử lý vi phạm đối với những người không tuân thủ quy chế hoạt động của sàn giao dịch thương mại điện tử. 3. Khi có thay đổi về một trong các nội dung nêu tại Khoản 2 Điều này, thươ"
+            },
+            {
+              "rank": 2,
+              "id": "nd52-quy-trinh-dat-hang-truc-tuyen::chunk_9",
+              "score": 0.728066,
+              "customer_role": "buyer",
+              "preview": "## Điều 21. Thời điểm giao kết hợp đồng Thời điểm giao kết hợp đồng khi sử dụng chức năng đặt hàng trực tuyến trên website thương mại điện tử là thời điểm khách hàng nhận được trả lời của thương nhân, tổ chức, cá nhân bán hàng chấp nhận đề nghị giao kết hợp đồ"
+            },
+            {
+              "rank": 3,
+              "id": "nd52-quy-trinh-dat-hang-truc-tuyen::chunk_8",
+              "score": 0.63843,
+              "customer_role": "buyer",
+              "preview": "## Điều 20. Chấm dứt đề nghị giao kết hợp đồng 2. Trường hợp thương nhân, tổ chức, cá nhân bán hàng không công bố rõ thời hạn trả lời đề nghị giao kết hợp đồng, nếu trong vòng 12 (mười hai) giờ kể từ khi gửi đề nghị giao kết hợp đồng, khách hàng không nhận đượ"
+            }
+          ]
+        },
+        {
+          "id": "Q3",
+          "kind": "quy trinh",
+          "question": "Cơ chế rà soát và xác nhận nội dung hợp đồng phải hiển thị những thông tin gì cho khách hàng trước khi đặt hàng?",
+          "gold_doc_id": "nd52-quy-trinh-dat-hang-truc-tuyen",
+          "anchors": [
+            "Tổng giá trị của hợp đồng"
+          ],
+          "filter": null,
+          "hit_rank": 1,
+          "points": 2,
+          "results": [
+            {
+              "rank": 1,
+              "id": "nd52-quy-trinh-dat-hang-truc-tuyen::chunk_4",
+              "score": 0.816344,
+              "customer_role": "buyer",
+              "preview": "## Điều 18. Rà soát và xác nhận nội dung hợp đồng c) Tổng giá trị của hợp đồng và các chi tiết liên quan đến phương thức thanh toán được khách hàng lựa chọn. Những thông tin này phải có khả năng lưu trữ, in ấn được trên hệ thống thông tin của khách hàng và hiể"
+            },
+            {
+              "rank": 2,
+              "id": "nd52-quy-trinh-dat-hang-truc-tuyen::chunk_3",
+              "score": 0.776736,
+              "customer_role": "buyer",
+              "preview": "## Điều 18. Rà soát và xác nhận nội dung hợp đồng Website thương mại điện tử phải có cơ chế cho phép khách hàng rà soát, bổ sung, sửa đổi và xác nhận nội dung giao dịch trước khi sử dụng chức năng đặt hàng trực tuyến để gửi đề nghị giao kết hợp đồng. Cơ chế rà"
+            },
+            {
+              "rank": 3,
+              "id": "seller-listing::chunk_1",
+              "score": 0.756149,
+              "customer_role": "seller",
+              "preview": "## Điều 28. Cung cấp thông tin trên website thương mại điện tử bán hàng c) Có khả năng lưu trữ, in và hiển thị được về sau; d) Được hiển thị rõ đối với khách hàng trước thời điểm khách hàng gửi đề nghị giao kết hợp đồng."
+            }
+          ]
+        },
+        {
+          "id": "Q4",
+          "kind": "liet ke + FILTER BAT BUOC",
+          "question": "Chính sách kiểm hàng có phải là một điều kiện giao dịch chung bắt buộc phải công bố không?",
+          "gold_doc_id": "nd85-2021-diem-moi-bao-ve-nguoi-tieu-dung",
+          "anchors": [
+            "chính sách kiểm hàng"
+          ],
+          "filter": {
+            "customer_role": "buyer"
+          },
+          "hit_rank": 1,
+          "points": 2,
+          "results": [
+            {
+              "rank": 1,
+              "id": "nd85-2021-diem-moi-bao-ve-nguoi-tieu-dung::chunk_5",
+              "score": 0.825391,
+              "customer_role": "buyer",
+              "preview": "## 4. Chính sách kiểm hàng là điều kiện giao dịch chung bắt buộc Từ ngày 01/01/2022, chính sách kiểm hàng được coi là một trong những điều kiện giao dịch chung bắt buộc mà thương nhân, tổ chức, cá nhân phải công bố trên website thương mại điện tử. Quy định này"
+            },
+            {
+              "rank": 2,
+              "id": "nd52-quy-trinh-dat-hang-truc-tuyen::chunk_3",
+              "score": 0.550491,
+              "customer_role": "buyer",
+              "preview": "## Điều 18. Rà soát và xác nhận nội dung hợp đồng Website thương mại điện tử phải có cơ chế cho phép khách hàng rà soát, bổ sung, sửa đổi và xác nhận nội dung giao dịch trước khi sử dụng chức năng đặt hàng trực tuyến để gửi đề nghị giao kết hợp đồng. Cơ chế rà"
+            },
+            {
+              "rank": 3,
+              "id": "nd52-quy-trinh-dat-hang-truc-tuyen::chunk_7",
+              "score": 0.54721,
+              "customer_role": "buyer",
+              "preview": "## Điều 20. Chấm dứt đề nghị giao kết hợp đồng 1. Trường hợp thương nhân, tổ chức, cá nhân bán hàng có công bố thời hạn trả lời đề nghị giao kết hợp đồng, nếu hết thời hạn này mà khách hàng vẫn không được trả lời thì đề nghị giao kết hợp đồng của khách hàng ch"
+            }
+          ]
+        },
+        {
+          "id": "Q5",
+          "kind": "ngoai le",
+          "question": "Website niêm yết giá mà không nói rõ đã bao gồm thuế và phí vận chuyển chưa thì hiểu thế nào?",
+          "gold_doc_id": "seller-listing",
+          "anchors": [
+            "được hiểu là đã bao gồm mọi chi phí"
+          ],
+          "filter": null,
+          "hit_rank": 1,
+          "points": 2,
+          "results": [
+            {
+              "rank": 1,
+              "id": "seller-listing::chunk_5",
+              "score": 0.619969,
+              "customer_role": "seller",
+              "preview": "## Điều 31. Thông tin về giá cả 1. Thông tin về giá hàng hóa hoặc dịch vụ, nếu có, phải thể hiện rõ giá đó đã bao gồm hay chưa bao gồm những chi phí liên quan đến việc mua hàng hóa hoặc dịch vụ như thuế, phí đóng gói, phí vận chuyển và các chi phí phát sinh kh"
+            },
+            {
+              "rank": 2,
+              "id": "seller-listing::chunk_6",
+              "score": 0.562185,
+              "customer_role": "seller",
+              "preview": "## Điều 31. Thông tin về giá cả 3. Đối với dịch vụ trên các website cung cấp dịch vụ thương mại điện tử quy định tại Mục 2 và 4 Chương này, website phải công bố thông tin chi tiết về cách thức tính phí dịch vụ và cơ chế thanh toán."
+            },
+            {
+              "rank": 3,
+              "id": "nd52-dang-ky-thong-bao-website::chunk_0",
+              "score": 0.528558,
+              "customer_role": "seller",
+              "preview": "## Điều 52. Điều kiện thiết lập website thương mại điện tử bán hàng 1. Là thương nhân, tổ chức có chức năng, nhiệm vụ phù hợp hoặc cá nhân đã được cấp mã số thuế cá nhân. 2. Có website với tên miền hợp lệ và tuân thủ các quy định về quản lý thông tin trên Inte"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "sentence_hai",
+      "label": "Theo câu · Hải",
+      "owner": "Trương Ngọc Hải · 2A202601092",
+      "method": "SentenceChunker",
+      "parameters": "max_sentences_per_chunk=3",
+      "chunks": 69,
+      "build_seconds": 1.0472,
+      "total_points": 9,
+      "queries": [
+        {
+          "id": "Q1",
+          "kind": "so lieu",
+          "question": "Nếu người bán không công bố rõ thời hạn trả lời, sau bao lâu đề nghị giao kết hợp đồng của khách hàng hết hiệu lực?",
+          "gold_doc_id": "nd52-quy-trinh-dat-hang-truc-tuyen",
+          "anchors": [
+            "12 (mười hai) giờ"
+          ],
+          "filter": null,
+          "hit_rank": 1,
+          "points": 2,
+          "results": [
+            {
+              "rank": 1,
+              "id": "nd52-quy-trinh-dat-hang-truc-tuyen::chunk_8",
+              "score": 0.867301,
+              "customer_role": "buyer",
+              "preview": "2. Trường hợp thương nhân, tổ chức, cá nhân bán hàng không công bố rõ thời hạn trả lời đề nghị giao kết hợp đồng, nếu trong vòng 12 (mười hai) giờ kể từ khi gửi đề nghị giao kết hợp đồng, khách hàng không nhận được trả lời đề nghị giao kết hợp đồng thì đề nghị"
+            },
+            {
+              "rank": 2,
+              "id": "nd52-quy-trinh-dat-hang-truc-tuyen::chunk_7",
+              "score": 0.827511,
+              "customer_role": "buyer",
+              "preview": "Chấm dứt đề nghị giao kết hợp đồng  1. Trường hợp thương nhân, tổ chức, cá nhân bán hàng có công bố thời hạn trả lời đề nghị giao kết hợp đồng, nếu hết thời hạn này mà khách hàng vẫn không được trả lời thì đề nghị giao kết hợp đồng của khách hàng chấm dứt hiệu"
+            },
+            {
+              "rank": 3,
+              "id": "seller-listing::chunk_8",
+              "score": 0.717199,
+              "customer_role": "seller",
+              "preview": "2. Trường hợp phát sinh chậm trễ trong việc giao hàng hoặc cung ứng dịch vụ, thương nhân, tổ chức, cá nhân phải có thông tin kịp thời cho khách hàng và tạo cơ hội để khách hàng có thể hủy hợp đồng nếu muốn. ## Điều 34."
+            }
+          ]
+        },
+        {
+          "id": "Q2",
+          "kind": "dieu kien",
+          "question": "Sàn giao dịch thương mại điện tử phải thông báo trước bao nhiêu ngày khi thay đổi quy chế hoạt động?",
+          "gold_doc_id": "nd52-quy-che-hoat-dong-san",
+          "anchors": [
+            "ít nhất 5 ngày"
+          ],
+          "filter": null,
+          "hit_rank": 1,
+          "points": 2,
+          "results": [
+            {
+              "rank": 1,
+              "id": "nd52-quy-che-hoat-dong-san::chunk_2",
+              "score": 0.828764,
+              "customer_role": "both",
+              "preview": "Khi có thay đổi về một trong các nội dung nêu tại Khoản 2 Điều này, thương nhân, tổ chức cung cấp dịch vụ sàn giao dịch thương mại điện tử phải thông báo cho tất cả các đối tượng sử dụng dịch vụ sàn giao dịch thương mại điện tử ít nhất 5 ngày trước khi áp dụng"
+            },
+            {
+              "rank": 2,
+              "id": "nd52-quy-trinh-dat-hang-truc-tuyen::chunk_9",
+              "score": 0.744849,
+              "customer_role": "buyer",
+              "preview": "Thời điểm giao kết hợp đồng  Thời điểm giao kết hợp đồng khi sử dụng chức năng đặt hàng trực tuyến trên website thương mại điện tử là thời điểm khách hàng nhận được trả lời của thương nhân, tổ chức, cá nhân bán hàng chấp nhận đề nghị giao kết hợp đồng theo quy"
+            },
+            {
+              "rank": 3,
+              "id": "nd52-quy-trinh-dat-hang-truc-tuyen::chunk_8",
+              "score": 0.652843,
+              "customer_role": "buyer",
+              "preview": "2. Trường hợp thương nhân, tổ chức, cá nhân bán hàng không công bố rõ thời hạn trả lời đề nghị giao kết hợp đồng, nếu trong vòng 12 (mười hai) giờ kể từ khi gửi đề nghị giao kết hợp đồng, khách hàng không nhận được trả lời đề nghị giao kết hợp đồng thì đề nghị"
+            }
+          ]
+        },
+        {
+          "id": "Q3",
+          "kind": "quy trinh",
+          "question": "Cơ chế rà soát và xác nhận nội dung hợp đồng phải hiển thị những thông tin gì cho khách hàng trước khi đặt hàng?",
+          "gold_doc_id": "nd52-quy-trinh-dat-hang-truc-tuyen",
+          "anchors": [
+            "Tổng giá trị của hợp đồng"
+          ],
+          "filter": null,
+          "hit_rank": 3,
+          "points": 1,
+          "results": [
+            {
+              "rank": 1,
+              "id": "nd52-quy-trinh-dat-hang-truc-tuyen::chunk_4",
+              "score": 0.809334,
+              "customer_role": "buyer",
+              "preview": "Hiển thị cho khách hàng những thông tin về cách thức trả lời chấp nhận đề nghị giao kết hợp đồng và thời hạn trả lời đề nghị giao kết hợp đồng. 3. Cho phép khách hàng sau khi rà soát những thông tin nói trên được lựa chọn hủy giao dịch hoặc xác nhận việc đề ng"
+            },
+            {
+              "rank": 2,
+              "id": "nd52-quy-trinh-dat-hang-truc-tuyen::chunk_2",
+              "score": 0.769522,
+              "customer_role": "buyer",
+              "preview": "## Điều 18. Rà soát và xác nhận nội dung hợp đồng  Website thương mại điện tử phải có cơ chế cho phép khách hàng rà soát, bổ sung, sửa đổi và xác nhận nội dung giao dịch trước khi sử dụng chức năng đặt hàng trực tuyến để gửi đề nghị giao kết hợp đồng. Cơ chế r"
+            },
+            {
+              "rank": 3,
+              "id": "nd52-quy-trinh-dat-hang-truc-tuyen::chunk_3",
+              "score": 0.736999,
+              "customer_role": "buyer",
+              "preview": "Hiển thị cho khách hàng những thông tin sau:  a) Tên hàng hóa hoặc dịch vụ, số lượng và chủng loại;  b) Phương thức và thời hạn giao hàng hoặc cung ứng dịch vụ;  c) Tổng giá trị của hợp đồng và các chi tiết liên quan đến phương thức thanh toán được khách hàng "
+            }
+          ]
+        },
+        {
+          "id": "Q4",
+          "kind": "liet ke + FILTER BAT BUOC",
+          "question": "Chính sách kiểm hàng có phải là một điều kiện giao dịch chung bắt buộc phải công bố không?",
+          "gold_doc_id": "nd85-2021-diem-moi-bao-ve-nguoi-tieu-dung",
+          "anchors": [
+            "chính sách kiểm hàng"
+          ],
+          "filter": {
+            "customer_role": "buyer"
+          },
+          "hit_rank": 1,
+          "points": 2,
+          "results": [
+            {
+              "rank": 1,
+              "id": "nd85-2021-diem-moi-bao-ve-nguoi-tieu-dung::chunk_4",
+              "score": 0.814393,
+              "customer_role": "buyer",
+              "preview": "Chính sách kiểm hàng là điều kiện giao dịch chung bắt buộc  Từ ngày 01/01/2022, chính sách kiểm hàng được coi là một trong những điều kiện giao dịch chung bắt buộc mà thương nhân, tổ chức, cá nhân phải công bố trên website thương mại điện tử. Quy định này giúp"
+            },
+            {
+              "rank": 2,
+              "id": "nd52-bao-ve-thong-tin-ca-nhan::chunk_2",
+              "score": 0.595188,
+              "customer_role": "buyer",
+              "preview": "Trường hợp thương nhân, tổ chức, cá nhân hoạt động kinh doanh thương mại điện tử ủy quyền cho bên thứ ba thực hiện việc thu thập, lưu trữ thông tin cá nhân của người tiêu dùng:  a) Hợp đồng giữa hai bên phải quy định rõ trách nhiệm của mỗi bên trong việc tuân "
+            },
+            {
+              "rank": 3,
+              "id": "nd52-quy-trinh-dat-hang-truc-tuyen::chunk_7",
+              "score": 0.57657,
+              "customer_role": "buyer",
+              "preview": "Chấm dứt đề nghị giao kết hợp đồng  1. Trường hợp thương nhân, tổ chức, cá nhân bán hàng có công bố thời hạn trả lời đề nghị giao kết hợp đồng, nếu hết thời hạn này mà khách hàng vẫn không được trả lời thì đề nghị giao kết hợp đồng của khách hàng chấm dứt hiệu"
+            }
+          ]
+        },
+        {
+          "id": "Q5",
+          "kind": "ngoai le",
+          "question": "Website niêm yết giá mà không nói rõ đã bao gồm thuế và phí vận chuyển chưa thì hiểu thế nào?",
+          "gold_doc_id": "seller-listing",
+          "anchors": [
+            "được hiểu là đã bao gồm mọi chi phí"
+          ],
+          "filter": null,
+          "hit_rank": 1,
+          "points": 2,
+          "results": [
+            {
+              "rank": 1,
+              "id": "seller-listing::chunk_6",
+              "score": 0.702757,
+              "customer_role": "seller",
+              "preview": "Trừ trường hợp các bên có thỏa thuận khác, nếu thông tin giá hàng hóa hoặc dịch vụ niêm yết trên website không thể hiện rõ giá đó đã bao gồm hay chưa bao gồm những chi phí liên quan đến việc mua hàng hóa hoặc dịch vụ như thuế, phí đóng gói, phí vận chuyển và c"
+            },
+            {
+              "rank": 2,
+              "id": "seller-listing::chunk_5",
+              "score": 0.514923,
+              "customer_role": "seller",
+              "preview": "Thông tin về giá cả  1. Thông tin về giá hàng hóa hoặc dịch vụ, nếu có, phải thể hiện rõ giá đó đã bao gồm hay chưa bao gồm những chi phí liên quan đến việc mua hàng hóa hoặc dịch vụ như thuế, phí đóng gói, phí vận chuyển và các chi phí phát sinh khác. 2."
+            },
+            {
+              "rank": 3,
+              "id": "nd52-dang-ky-thong-bao-website::chunk_1",
+              "score": 0.512828,
+              "customer_role": "seller",
+              "preview": "2. Có website với tên miền hợp lệ và tuân thủ các quy định về quản lý thông tin trên Internet. 3."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "recursive_huy",
+      "label": "Đệ quy · Huy",
+      "owner": "Vũ Văn Huy · 2A202601342",
+      "method": "RecursiveChunker",
+      "parameters": "chunk_size=500 · separators=đoạn → dòng → câu → từ → ký tự",
+      "chunks": 74,
+      "build_seconds": 1.1695,
+      "total_points": 9,
+      "queries": [
+        {
+          "id": "Q1",
+          "kind": "so lieu",
+          "question": "Nếu người bán không công bố rõ thời hạn trả lời, sau bao lâu đề nghị giao kết hợp đồng của khách hàng hết hiệu lực?",
+          "gold_doc_id": "nd52-quy-trinh-dat-hang-truc-tuyen",
+          "anchors": [
+            "12 (mười hai) giờ"
+          ],
+          "filter": null,
+          "hit_rank": 1,
+          "points": 2,
+          "results": [
+            {
+              "rank": 1,
+              "id": "nd52-quy-trinh-dat-hang-truc-tuyen::chunk_8",
+              "score": 0.867647,
+              "customer_role": "buyer",
+              "preview": "2. Trường hợp thương nhân, tổ chức, cá nhân bán hàng không công bố rõ thời hạn trả lời đề nghị giao kết hợp đồng, nếu trong vòng 12 (mười hai) giờ kể từ khi gửi đề nghị giao kết hợp đồng, khách hàng không nhận được trả lời đề nghị giao kết hợp đồng thì đề nghị"
+            },
+            {
+              "rank": 2,
+              "id": "nd52-quy-trinh-dat-hang-truc-tuyen::chunk_7",
+              "score": 0.864329,
+              "customer_role": "buyer",
+              "preview": "1. Trường hợp thương nhân, tổ chức, cá nhân bán hàng có công bố thời hạn trả lời đề nghị giao kết hợp đồng, nếu hết thời hạn này mà khách hàng vẫn không được trả lời thì đề nghị giao kết hợp đồng của khách hàng chấm dứt hiệu lực. Việc trả lời chấp nhận sau thờ"
+            },
+            {
+              "rank": 3,
+              "id": "nd52-quy-trinh-dat-hang-truc-tuyen::chunk_12",
+              "score": 0.772582,
+              "customer_role": "buyer",
+              "preview": "c) Nếu website không công bố rõ thời điểm hợp đồng chấm dứt hiệu lực trong trường hợp khách hàng là bên chấm dứt hợp đồng, thì thời điểm khách hàng gửi thông báo được coi là thời điểm hợp đồng chấm dứt."
+            }
+          ]
+        },
+        {
+          "id": "Q2",
+          "kind": "dieu kien",
+          "question": "Sàn giao dịch thương mại điện tử phải thông báo trước bao nhiêu ngày khi thay đổi quy chế hoạt động?",
+          "gold_doc_id": "nd52-quy-che-hoat-dong-san",
+          "anchors": [
+            "ít nhất 5 ngày"
+          ],
+          "filter": null,
+          "hit_rank": 1,
+          "points": 2,
+          "results": [
+            {
+              "rank": 1,
+              "id": "nd52-quy-che-hoat-dong-san::chunk_4",
+              "score": 0.863339,
+              "customer_role": "both",
+              "preview": "3. Khi có thay đổi về một trong các nội dung nêu tại Khoản 2 Điều này, thương nhân, tổ chức cung cấp dịch vụ sàn giao dịch thương mại điện tử phải thông báo cho tất cả các đối tượng sử dụng dịch vụ sàn giao dịch thương mại điện tử ít nhất 5 ngày trước khi áp d"
+            },
+            {
+              "rank": 2,
+              "id": "nd52-quy-trinh-dat-hang-truc-tuyen::chunk_9",
+              "score": 0.73389,
+              "customer_role": "buyer",
+              "preview": "Thời điểm giao kết hợp đồng khi sử dụng chức năng đặt hàng trực tuyến trên website thương mại điện tử là thời điểm khách hàng nhận được trả lời của thương nhân, tổ chức, cá nhân bán hàng chấp nhận đề nghị giao kết hợp đồng theo quy định tại Khoản 2 Điều 19 Ngh"
+            },
+            {
+              "rank": 3,
+              "id": "nd52-quy-trinh-dat-hang-truc-tuyen::chunk_8",
+              "score": 0.664332,
+              "customer_role": "buyer",
+              "preview": "2. Trường hợp thương nhân, tổ chức, cá nhân bán hàng không công bố rõ thời hạn trả lời đề nghị giao kết hợp đồng, nếu trong vòng 12 (mười hai) giờ kể từ khi gửi đề nghị giao kết hợp đồng, khách hàng không nhận được trả lời đề nghị giao kết hợp đồng thì đề nghị"
+            }
+          ]
+        },
+        {
+          "id": "Q3",
+          "kind": "quy trinh",
+          "question": "Cơ chế rà soát và xác nhận nội dung hợp đồng phải hiển thị những thông tin gì cho khách hàng trước khi đặt hàng?",
+          "gold_doc_id": "nd52-quy-trinh-dat-hang-truc-tuyen",
+          "anchors": [
+            "Tổng giá trị của hợp đồng"
+          ],
+          "filter": null,
+          "hit_rank": 2,
+          "points": 1,
+          "results": [
+            {
+              "rank": 1,
+              "id": "nd52-quy-trinh-dat-hang-truc-tuyen::chunk_5",
+              "score": 0.801959,
+              "customer_role": "buyer",
+              "preview": "3. Cho phép khách hàng sau khi rà soát những thông tin nói trên được lựa chọn hủy giao dịch hoặc xác nhận việc đề nghị giao kết hợp đồng.  ## Điều 19. Trả lời đề nghị giao kết hợp đồng  1. Trả lời chấp nhận hoặc không chấp nhận đề nghị giao kết hợp đồng phải đ"
+            },
+            {
+              "rank": 2,
+              "id": "nd52-quy-trinh-dat-hang-truc-tuyen::chunk_4",
+              "score": 0.79078,
+              "customer_role": "buyer",
+              "preview": "c) Tổng giá trị của hợp đồng và các chi tiết liên quan đến phương thức thanh toán được khách hàng lựa chọn.  Những thông tin này phải có khả năng lưu trữ, in ấn được trên hệ thống thông tin của khách hàng và hiển thị được về sau.  2. Hiển thị cho khách hàng nh"
+            },
+            {
+              "rank": 3,
+              "id": "nd52-quy-trinh-dat-hang-truc-tuyen::chunk_3",
+              "score": 0.753912,
+              "customer_role": "buyer",
+              "preview": "Website thương mại điện tử phải có cơ chế cho phép khách hàng rà soát, bổ sung, sửa đổi và xác nhận nội dung giao dịch trước khi sử dụng chức năng đặt hàng trực tuyến để gửi đề nghị giao kết hợp đồng. Cơ chế rà soát và xác nhận này phải đáp ứng các điều kiện s"
+            }
+          ]
+        },
+        {
+          "id": "Q4",
+          "kind": "liet ke + FILTER BAT BUOC",
+          "question": "Chính sách kiểm hàng có phải là một điều kiện giao dịch chung bắt buộc phải công bố không?",
+          "gold_doc_id": "nd85-2021-diem-moi-bao-ve-nguoi-tieu-dung",
+          "anchors": [
+            "chính sách kiểm hàng"
+          ],
+          "filter": {
+            "customer_role": "buyer"
+          },
+          "hit_rank": 1,
+          "points": 2,
+          "results": [
+            {
+              "rank": 1,
+              "id": "nd85-2021-diem-moi-bao-ve-nguoi-tieu-dung::chunk_6",
+              "score": 0.767452,
+              "customer_role": "buyer",
+              "preview": "Từ ngày 01/01/2022, chính sách kiểm hàng được coi là một trong những điều kiện giao dịch chung bắt buộc mà thương nhân, tổ chức, cá nhân phải công bố trên website thương mại điện tử. Quy định này giúp người tiêu dùng hiểu rõ về chính sách kiểm hàng của từng do"
+            },
+            {
+              "rank": 2,
+              "id": "nd85-2021-diem-moi-bao-ve-nguoi-tieu-dung::chunk_5",
+              "score": 0.658964,
+              "customer_role": "buyer",
+              "preview": "Điểm c khoản 3 Điều 26 được bổ sung quy định: \"Trường hợp thương nhân, tổ chức cung cấp dịch vụ thương mại điện tử thực hiện dịch vụ cung cấp thông tin về hàng hóa, dịch vụ của người bán tới người tiêu dùng trên website thương mại điện tử thì thương nhân, tổ c"
+            },
+            {
+              "rank": 3,
+              "id": "nd52-bao-ve-thong-tin-ca-nhan::chunk_3",
+              "score": 0.644175,
+              "customer_role": "buyer",
+              "preview": "a) Hợp đồng giữa hai bên phải quy định rõ trách nhiệm của mỗi bên trong việc tuân thủ các quy định tại Nghị định này và những quy định pháp luật liên quan về bảo vệ thông tin cá nhân;  b) Nếu hợp đồng giữa hai bên không quy định rõ trách nhiệm của mỗi bên thì "
+            }
+          ]
+        },
+        {
+          "id": "Q5",
+          "kind": "ngoai le",
+          "question": "Website niêm yết giá mà không nói rõ đã bao gồm thuế và phí vận chuyển chưa thì hiểu thế nào?",
+          "gold_doc_id": "seller-listing",
+          "anchors": [
+            "được hiểu là đã bao gồm mọi chi phí"
+          ],
+          "filter": null,
+          "hit_rank": 1,
+          "points": 2,
+          "results": [
+            {
+              "rank": 1,
+              "id": "seller-listing::chunk_5",
+              "score": 0.702447,
+              "customer_role": "seller",
+              "preview": "2. Trừ trường hợp các bên có thỏa thuận khác, nếu thông tin giá hàng hóa hoặc dịch vụ niêm yết trên website không thể hiện rõ giá đó đã bao gồm hay chưa bao gồm những chi phí liên quan đến việc mua hàng hóa hoặc dịch vụ như thuế, phí đóng gói, phí vận chuyển v"
+            },
+            {
+              "rank": 2,
+              "id": "seller-listing::chunk_6",
+              "score": 0.557538,
+              "customer_role": "seller",
+              "preview": "3. Đối với dịch vụ trên các website cung cấp dịch vụ thương mại điện tử quy định tại Mục 2 và 4 Chương này, website phải công bố thông tin chi tiết về cách thức tính phí dịch vụ và cơ chế thanh toán.  ## Điều 33. Thông tin về vận chuyển và giao nhận  1. Thương"
+            },
+            {
+              "rank": 3,
+              "id": "seller-listing::chunk_1",
+              "score": 0.519332,
+              "customer_role": "seller",
+              "preview": "b) Được sắp xếp tại các mục tương ứng trên website và có thể truy cập bằng phương pháp trực tuyến;  c) Có khả năng lưu trữ, in và hiển thị được về sau;  d) Được hiển thị rõ đối với khách hàng trước thời điểm khách hàng gửi đề nghị giao kết hợp đồng.  ## Điều 2"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "fixed_quang",
+      "label": "Kích thước cố định · Quang",
+      "owner": "Nguyễn Nhật Quang · 01452",
+      "method": "FixedSizeChunker",
+      "parameters": "chunk_size=500 · overlap=50",
+      "chunks": 67,
+      "build_seconds": 1.1932,
+      "total_points": 7,
+      "queries": [
+        {
+          "id": "Q1",
+          "kind": "so lieu",
+          "question": "Nếu người bán không công bố rõ thời hạn trả lời, sau bao lâu đề nghị giao kết hợp đồng của khách hàng hết hiệu lực?",
+          "gold_doc_id": "nd52-quy-trinh-dat-hang-truc-tuyen",
+          "anchors": [
+            "12 (mười hai) giờ"
+          ],
+          "filter": null,
+          "hit_rank": 1,
+          "points": 2,
+          "results": [
+            {
+              "rank": 1,
+              "id": "nd52-quy-trinh-dat-hang-truc-tuyen::chunk_7",
+              "score": 0.812039,
+              "customer_role": "buyer",
+              "preview": "ường hợp thương nhân, tổ chức, cá nhân bán hàng không công bố rõ thời hạn trả lời đề nghị giao kết hợp đồng, nếu trong vòng 12 (mười hai) giờ kể từ khi gửi đề nghị giao kết hợp đồng, khách hàng không nhận được trả lời đề nghị giao kết hợp đồng thì đề nghị giao"
+            },
+            {
+              "rank": 2,
+              "id": "nd52-quy-trinh-dat-hang-truc-tuyen::chunk_6",
+              "score": 0.809442,
+              "customer_role": "buyer",
+              "preview": "hiện hợp đồng khi cần thiết.  ## Điều 20. Chấm dứt đề nghị giao kết hợp đồng  1. Trường hợp thương nhân, tổ chức, cá nhân bán hàng có công bố thời hạn trả lời đề nghị giao kết hợp đồng, nếu hết thời hạn này mà khách hàng vẫn không được trả lời thì đề nghị giao"
+            },
+            {
+              "rank": 3,
+              "id": "nd52-quy-trinh-dat-hang-truc-tuyen::chunk_4",
+              "score": 0.713293,
+              "customer_role": "buyer",
+              "preview": "àng những thông tin về cách thức trả lời chấp nhận đề nghị giao kết hợp đồng và thời hạn trả lời đề nghị giao kết hợp đồng.  3. Cho phép khách hàng sau khi rà soát những thông tin nói trên được lựa chọn hủy giao dịch hoặc xác nhận việc đề nghị giao kết hợp đồn"
+            }
+          ]
+        },
+        {
+          "id": "Q2",
+          "kind": "dieu kien",
+          "question": "Sàn giao dịch thương mại điện tử phải thông báo trước bao nhiêu ngày khi thay đổi quy chế hoạt động?",
+          "gold_doc_id": "nd52-quy-che-hoat-dong-san",
+          "anchors": [
+            "ít nhất 5 ngày"
+          ],
+          "filter": null,
+          "hit_rank": 2,
+          "points": 1,
+          "results": [
+            {
+              "rank": 1,
+              "id": "nd52-quy-trinh-dat-hang-truc-tuyen::chunk_7",
+              "score": 0.741645,
+              "customer_role": "buyer",
+              "preview": "ường hợp thương nhân, tổ chức, cá nhân bán hàng không công bố rõ thời hạn trả lời đề nghị giao kết hợp đồng, nếu trong vòng 12 (mười hai) giờ kể từ khi gửi đề nghị giao kết hợp đồng, khách hàng không nhận được trả lời đề nghị giao kết hợp đồng thì đề nghị giao"
+            },
+            {
+              "rank": 2,
+              "id": "nd52-quy-che-hoat-dong-san::chunk_4",
+              "score": 0.740835,
+              "customer_role": "both",
+              "preview": "g báo cho tất cả các đối tượng sử dụng dịch vụ sàn giao dịch thương mại điện tử ít nhất 5 ngày trước khi áp dụng những thay đổi đó."
+            },
+            {
+              "rank": 3,
+              "id": "nd52-quy-trinh-dat-hang-truc-tuyen::chunk_8",
+              "score": 0.668511,
+              "customer_role": "buyer",
+              "preview": "g mại điện tử là thời điểm khách hàng nhận được trả lời của thương nhân, tổ chức, cá nhân bán hàng chấp nhận đề nghị giao kết hợp đồng theo quy định tại Khoản 2 Điều 19 Nghị định này.  ## Điều 22. Thủ tục chấm dứt hợp đồng dịch vụ thương mại điện tử  1. Websit"
+            }
+          ]
+        },
+        {
+          "id": "Q3",
+          "kind": "quy trinh",
+          "question": "Cơ chế rà soát và xác nhận nội dung hợp đồng phải hiển thị những thông tin gì cho khách hàng trước khi đặt hàng?",
+          "gold_doc_id": "nd52-quy-trinh-dat-hang-truc-tuyen",
+          "anchors": [
+            "Tổng giá trị của hợp đồng"
+          ],
+          "filter": null,
+          "hit_rank": null,
+          "points": 0,
+          "results": [
+            {
+              "rank": 1,
+              "id": "nd52-quy-trinh-dat-hang-truc-tuyen::chunk_4",
+              "score": 0.7555,
+              "customer_role": "buyer",
+              "preview": "àng những thông tin về cách thức trả lời chấp nhận đề nghị giao kết hợp đồng và thời hạn trả lời đề nghị giao kết hợp đồng.  3. Cho phép khách hàng sau khi rà soát những thông tin nói trên được lựa chọn hủy giao dịch hoặc xác nhận việc đề nghị giao kết hợp đồn"
+            },
+            {
+              "rank": 2,
+              "id": "nd52-quy-trinh-dat-hang-truc-tuyen::chunk_5",
+              "score": 0.743986,
+              "customer_role": "buyer",
+              "preview": "in và hiển thị được tại hệ thống thông tin của khách hàng.  2. Khi trả lời chấp nhận đề nghị giao kết hợp đồng của khách hàng, thương nhân, tổ chức, cá nhân bán hàng phải cung cấp cho khách hàng những thông tin sau:  a) Danh sách toàn bộ hàng hóa hoặc dịch vụ "
+            },
+            {
+              "rank": 3,
+              "id": "nd52-quy-trinh-dat-hang-truc-tuyen::chunk_9",
+              "score": 0.738774,
+              "customer_role": "buyer",
+              "preview": "dụng dịch vụ. Công cụ này phải đáp ứng các điều kiện sau:  a) Cho phép khách hàng lưu trữ và hiển thị thông báo chấm dứt hợp đồng trong hệ thống thông tin của mình sau khi gửi đi;  b) Có cơ chế phản hồi để khách hàng biết thông báo chấm dứt hợp đồng của mình đ"
+            }
+          ]
+        },
+        {
+          "id": "Q4",
+          "kind": "liet ke + FILTER BAT BUOC",
+          "question": "Chính sách kiểm hàng có phải là một điều kiện giao dịch chung bắt buộc phải công bố không?",
+          "gold_doc_id": "nd85-2021-diem-moi-bao-ve-nguoi-tieu-dung",
+          "anchors": [
+            "chính sách kiểm hàng"
+          ],
+          "filter": {
+            "customer_role": "buyer"
+          },
+          "hit_rank": 1,
+          "points": 2,
+          "results": [
+            {
+              "rank": 1,
+              "id": "nd85-2021-diem-moi-bao-ve-nguoi-tieu-dung::chunk_5",
+              "score": 0.782519,
+              "customer_role": "buyer",
+              "preview": "Từ ngày 01/01/2022, chính sách kiểm hàng được coi là một trong những điều kiện giao dịch chung bắt buộc mà thương nhân, tổ chức, cá nhân phải công bố trên website thương mại điện tử. Quy định này giúp người tiêu dùng hiểu rõ về chính sách kiểm hàng của từng do"
+            },
+            {
+              "rank": 2,
+              "id": "nd85-2021-diem-moi-bao-ve-nguoi-tieu-dung::chunk_4",
+              "score": 0.692039,
+              "customer_role": "buyer",
+              "preview": "cung cấp thông tin  Điểm c khoản 3 Điều 26 được bổ sung quy định: \"Trường hợp thương nhân, tổ chức cung cấp dịch vụ thương mại điện tử thực hiện dịch vụ cung cấp thông tin về hàng hóa, dịch vụ của người bán tới người tiêu dùng trên website thương mại điện tử t"
+            },
+            {
+              "rank": 3,
+              "id": "nd85-2021-diem-moi-bao-ve-nguoi-tieu-dung::chunk_6",
+              "score": 0.628236,
+              "customer_role": "buyer",
+              "preview": "iện giao dịch chung trước khi gửi đề nghị giao kết hợp đồng.  ## 5. Trách nhiệm giải quyết khiếu nại của người tiêu dùng  Khoản 11 Điều 36 được bổ sung thêm quy định:  - Chỉ định đầu mối tiếp nhận yêu cầu và cung cấp thông tin trực tuyến cho cơ quan quản lý nh"
+            }
+          ]
+        },
+        {
+          "id": "Q5",
+          "kind": "ngoai le",
+          "question": "Website niêm yết giá mà không nói rõ đã bao gồm thuế và phí vận chuyển chưa thì hiểu thế nào?",
+          "gold_doc_id": "seller-listing",
+          "anchors": [
+            "được hiểu là đã bao gồm mọi chi phí"
+          ],
+          "filter": null,
+          "hit_rank": 1,
+          "points": 2,
+          "results": [
+            {
+              "rank": 1,
+              "id": "seller-listing::chunk_4",
+              "score": 0.678806,
+              "customer_role": "seller",
+              "preview": "uế, phí đóng gói, phí vận chuyển và các chi phí phát sinh khác.  2. Trừ trường hợp các bên có thỏa thuận khác, nếu thông tin giá hàng hóa hoặc dịch vụ niêm yết trên website không thể hiện rõ giá đó đã bao gồm hay chưa bao gồm những chi phí liên quan đến việc m"
+            },
+            {
+              "rank": 2,
+              "id": "seller-listing::chunk_5",
+              "score": 0.565468,
+              "customer_role": "seller",
+              "preview": "website cung cấp dịch vụ thương mại điện tử quy định tại Mục 2 và 4 Chương này, website phải công bố thông tin chi tiết về cách thức tính phí dịch vụ và cơ chế thanh toán.  ## Điều 33. Thông tin về vận chuyển và giao nhận  1. Thương nhân, tổ chức, cá nhân phải"
+            },
+            {
+              "rank": 3,
+              "id": "seller-listing::chunk_3",
+              "score": 0.554312,
+              "customer_role": "seller",
+              "preview": "trên website thương mại điện tử bán hàng, thương nhân, tổ chức, cá nhân phải cung cấp những thông tin để khách hàng có thể xác định chính xác các đặc tính của hàng hóa, dịch vụ nhằm tránh sự hiểu nhầm khi quyết định việc đề nghị giao kết hợp đồng.  ## Điều 31."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

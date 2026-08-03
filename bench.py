@@ -52,6 +52,33 @@ TOP_K = 3
 # `src/2A202601424-NguyenQuangHa/chunking.py`. Ba dong con lai la baseline co
 # san trong starter code, giu de doi chieu.
 # ---------------------------------------------------------------------------
+def member_chunker(package: str, class_name: str):
+    """Nap class chunker tu goi bai lam cua MOT thanh vien cu the.
+
+    Vi sao can: `solution.py` chi tro ve DUNG MOT goi (goi dang duoc cham). De
+    dung bang so sanh chung cua nhom o REPORT_NHOM.md muc 2, bench.py phai chay
+    duoc chunker cua ca bon nguoi TRONG CUNG MOT LAN CHAY — cung corpus, cung 5
+    query, cung embedder, cung cach cham diem. Neu moi nguoi chay may minh roi
+    dan so vao bang thi rat de lech mot bien nao do ma khong ai phat hien.
+
+    Phan CHAM DIEM CA NHAN van khong bi anh huong: 42 test van chay tren dung
+    goi cua tung nguoi qua bien LAB_SOLUTION_PACKAGE.
+    """
+    import importlib
+
+    module = importlib.import_module(f"src.{package}")
+    chunker_class = getattr(module, class_name, None)
+    if chunker_class is None:
+        raise ImportError(f"src/{package} chua co class {class_name}")
+    return chunker_class
+
+
+#: Goi bai lam cua tung thanh vien (dung cho bang so sanh chung).
+PKG_HA = "2A202601424-NguyenQuangHa"
+PKG_QUANG = "K4_01452_NguyenNhatQuang"
+PKG_HAI = "2A202601092_TruongNgocHai"
+PKG_HUY = "K4_2A202601342_VuVanHuy"
+
 STRATEGIES = {
     # <<< STRATEGY CA NHAN CUA TOI (Nguyen Quang Ha - 2A202601424) >>>
     "paragraph": lambda: ParagraphChunker(max_chunk_size=700, min_chunk_size=450),
@@ -63,11 +90,45 @@ STRATEGIES = {
     "paragraph_nomerge": lambda: ParagraphChunker(
         max_chunk_size=700, min_chunk_size=0
     ),
+    # <<< STRATEGY CA NHAN CUA NGUYEN NHAT QUANG (K4_01452) >>>
+    # Chia theo CAU TRUC: ranh gioi la dong tieu de (Dieu / Chuong / Muc / "##").
+    # Day cung la chunker "theo heading hoac section" ma CP7 yeu cau nhom phai
+    # co it nhat mot nguoi lam.
+    # Tham so chot sau khi quet, xem REPORT_NHOM.md muc 2.
+    "structure": lambda: member_chunker(PKG_QUANG, "StructureChunker")(
+        max_section_size=900, repeat_heading=False, merge_lone_heading=True
+    ),
+    # Ablation 1: BAT lai buoc gan tieu de vao tung manh con cua section dai.
+    # Day la mac dinh ma de bai goi y — so lieu cua nhom lai noi nguoc lai.
+    "structure_repeatheading": lambda: member_chunker(PKG_QUANG, "StructureChunker")(
+        max_section_size=900, repeat_heading=True, merge_lone_heading=True
+    ),
+    # Ablation 2: tai hien FAILURE CASE Q2 — tieu de tro tro thanh chunk rieng.
+    "structure_loneheading": lambda: member_chunker(PKG_QUANG, "StructureChunker")(
+        max_section_size=900, repeat_heading=False, merge_lone_heading=False
+    ),
+    # <<< STRATEGY CA NHAN CUA TRUONG NGOC HAI (2A202601092) >>>
+    "recursive_hai": lambda: member_chunker(PKG_HAI, "RecursiveChunker")(
+        chunk_size=650
+    ),
+    # <<< STRATEGY CA NHAN CUA VU VAN HUY (K4_2A202601342) >>>
+    "fixed_huy": lambda: member_chunker(PKG_HUY, "FixedSizeChunker")(
+        chunk_size=600, overlap=150
+    ),
     # Baseline co san trong src/, khong phai cua ai ca.
     "fixed": lambda: FixedSizeChunker(chunk_size=500, overlap=50),
     "recursive": lambda: RecursiveChunker(chunk_size=400),
     "sentence": lambda: SentenceChunker(max_sentences_per_chunk=3),
 }
+
+#: Bang so sanh CHUNG cua nhom (`python bench.py --group`): moi nguoi dung mot
+#: strategy, khong ai duoc trung. Thu tu: 4 chien luoc chinh + 3 baseline.
+GROUP_STRATEGIES = [
+    ("Nguyen Quang Ha", "2A202601424", "paragraph"),
+    ("Nguyen Nhat Quang", "K4_01452", "structure"),
+    ("Truong Ngoc Hai", "2A202601092", "recursive_hai"),
+    ("Vu Van Huy", "K4_2A202601342", "fixed_huy"),
+]
 
 MY_STRATEGY = "paragraph"
 
@@ -284,6 +345,39 @@ def print_summary(summaries: list[dict]) -> None:
     )
 
 
+def print_group_table(summaries: list[dict]) -> None:
+    """Bang so sanh CHUNG giua 4 thanh vien — dan thang vao REPORT_NHOM.md muc 2."""
+    by_name = {s["name"]: s for s in summaries}
+
+    print("\n" + "=" * 78)
+    print("BANG SO SANH CHUNG CUA NHOM — 4 chien luoc chia chunk khac nhau")
+    print("=" * 78)
+    print("Chung: corpus, 5 query, embedder, top_k=3, cach cham diem muc chunk.")
+    print("Khac: DUNG MOT dong chon chunker.\n")
+
+    header = (
+        f"{'Thanh vien':20} {'MSSV':16} {'strategy':16} {'chunks':>7} "
+        + " ".join(f"{q['id']:>4}" for q in BENCHMARK_QUERIES)
+        + f" {'TONG':>6}"
+    )
+    print(header)
+    print("-" * len(header))
+    for person, mssv, strategy in GROUP_STRATEGIES:
+        summary = by_name.get(strategy)
+        if summary is None:
+            continue
+        cells = " ".join(
+            f"{summary['per_query'][q['id']]['points']:>4}" for q in BENCHMARK_QUERIES
+        )
+        print(
+            f"{person:20} {mssv:16} {strategy:16} {summary['chunks']:>7} {cells} "
+            f"{summary['total_points']:>6}"
+        )
+    print("-" * len(header))
+    print("Q4 duoc cham theo lan CO metadata_filter (customer_role=buyer).")
+    print("Diem toi da 10 (5 query x 2 diem, rubric docs/EVALUATION.md).")
+
+
 def main() -> int:
     args = [a for a in sys.argv[1:] if a.strip()]
     embedder = select_embedder()
@@ -300,6 +394,13 @@ def main() -> int:
     if args and args[0] == "--all":
         summaries = [run_strategy(name, embedder) for name in STRATEGIES]
         print_summary(summaries)
+        print_group_table(summaries)
+        return 0
+
+    if args and args[0] == "--group":
+        # Chi chay 4 strategy cua 4 thanh vien, khong chay ablation/baseline.
+        summaries = [run_strategy(s, embedder) for _, _, s in GROUP_STRATEGIES]
+        print_group_table(summaries)
         return 0
 
     name = args[0] if args else MY_STRATEGY

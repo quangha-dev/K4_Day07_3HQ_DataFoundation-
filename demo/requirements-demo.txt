@@ -1,0 +1,4 @@
+-r ../requirements-local.txt
+streamlit==1.48.1
+numpy>=1.26,<3
+

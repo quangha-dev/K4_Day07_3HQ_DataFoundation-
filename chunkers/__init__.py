@@ -37,7 +37,7 @@ Tao file `chunkers/<ten>.py`, ke thua `BaseChunker`, roi them mot dong vao
 """
 from __future__ import annotations
 
-from src.chunking import FixedSizeChunker, RecursiveChunker, SentenceChunker
+from solution import FixedSizeChunker, RecursiveChunker, SentenceChunker
 
 from .base import BaseChunker
 from .ha_heading import HeadingChunker, LLMSemanticChunker

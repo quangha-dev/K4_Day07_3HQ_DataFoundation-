@@ -91,7 +91,7 @@ Chay benchmark:
 """
 from __future__ import annotations
 
-from src.chunking import SentenceChunker, compute_similarity  # noqa: F401
+from solution import SentenceChunker, compute_similarity  # noqa: F401
 
 from .base import BaseChunker, clean, merge_short  # noqa: F401
 

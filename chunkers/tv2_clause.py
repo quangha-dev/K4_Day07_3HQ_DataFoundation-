@@ -83,7 +83,7 @@ Chay benchmark:
 """
 from __future__ import annotations
 
-from src.chunking import RecursiveChunker  # noqa: F401 - dung o buoc 5
+from solution import RecursiveChunker  # noqa: F401 - dung o buoc 5
 
 from .base import (  # noqa: F401 - import san de ban dung ngay
     BaseChunker,
